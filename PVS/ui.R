@@ -9,6 +9,7 @@ library(shiny)
 library(shinythemes)
 library(shinydashboard)
 library(readr)
+library(leaflet)
 
 
 shinyUI(
@@ -34,9 +35,11 @@ shinyUI(
                  asdfasdfasdf/n
                  dsfdasfasdfdasfasdfasdfa
                    dsfsafasdfdasfads/n
-                     adfdasfdasfads ")
-              
-              
+                     adfdasfdasfads "),
+              hr(),
+              leafletOutput("mymap")
+            
+             
       ),
       
       
