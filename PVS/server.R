@@ -17,16 +17,16 @@ library(ggmap)
 shinyServer(function(input, output, session) {
   
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
+  jj<- readRDS("base")
   
   
   
   
-  
-  #output$mymap <- renderLeaflet({
-   # leaflet(jj) %>%
-    #  addTiles() %>%  # Add default OpenStreetMap map tiles
-     # addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
-  #})
+  output$mymap <- renderLeaflet({
+   leaflet(jj) %>%
+    addTiles() %>%  # Add default OpenStreetMap map tiles
+   addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
+  })
   
  # 
  #output$puntos <- renderValueBox({
