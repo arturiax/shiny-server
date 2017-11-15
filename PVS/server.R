@@ -17,7 +17,7 @@ library(ggmap)
 shinyServer(function(input, output, session) {
   
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
-  jj<- readRDS("base")
+  jj<- readRDS("/home/art/shiny-server/PVS/base")
   
   
   
