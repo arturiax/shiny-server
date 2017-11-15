@@ -67,11 +67,11 @@ shinyServer(function(input, output, session) {
   
   
   
-  output$mymap <- renderLeaflet({
-    leaflet(jj) %>%
-      addTiles() %>%  # Add default OpenStreetMap map tiles
-      addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
-  })
+  #output$mymap <- renderLeaflet({
+   # leaflet(jj) %>%
+    #  addTiles() %>%  # Add default OpenStreetMap map tiles
+     # addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
+  #})
   
  # 
  #output$puntos <- renderValueBox({
