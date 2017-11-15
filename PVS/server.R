@@ -18,7 +18,14 @@ shinyServer(function(input, output, session) {
   
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
   jj<- readRDS("/home/art/shiny-server/PVS/base")
-  
+  jj$direc_corta <- gsub("Bilbo, Bizkaia, Spain","", jj$formatted_address)
+  jj$popup <- paste(sep = "<br/>",paste0("<b>",jj$nombre,"</b>"),jj$direc_corta)
+  icons <- awesomeIcons(
+    icon = ifelse(jj$accuracy== "bar", 'fa-beer', "fa-shopping-bag"),
+    iconColor = 'black',
+    library = 'fa',
+    markerColor = "blue"
+  )
   
   
   
