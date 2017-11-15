@@ -26,7 +26,7 @@ shinyServer(function(input, output, session) {
  #observeEvent(input$limpia, {
   # updateSliderInput(session, "age", value = 40)
   # updateCheckboxGroupInput(session, "cronicas", selected = character(0))
-   # })
+  # # })
  
  #output$punt <- renderText({ puntosa()  })
  
@@ -36,13 +36,12 @@ shinyServer(function(input, output, session) {
     
     
     
-      p<- ggplot(base, aes(1, y = nvisitas, fill = Personas)) +
-      geom_bar(stat="identity") +
-      ylab("Porcentaje") +
-      xlab("")+
+      p<- ggplot(base, aes(x=UAP)) +
+      geom_bar(stat="count") +
+      ylab("N") +
+      xlab("Centro")+
       theme_light()+
-      scale_x_discrete(breaks=NULL) +
-      expand_limits(y=c(0,100))
+      scale_x_discrete(breaks=NULL)  
        
       print(p)
  })
