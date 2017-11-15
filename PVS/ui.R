@@ -23,7 +23,7 @@ shinyUI(
     
    dashboardBody(
     tabItems( 
-      tabItem(tabName="PVS", 
+      tabItem(tabName="finger", 
               h1("PROGRAMA PRESCRIBE VIDA SALUDABLE"),
               hr(),
               h4("El programa vida saludable PVS , bla blab bla bla bla bla bla ................
@@ -34,8 +34,7 @@ shinyUI(
                  asdfasdfasdf/n
                  dsfdasfasdfdasfasdfasdfa
                    dsfsafasdfdasfads/n
-                     adfdasfdasfads
-                 ")
+                     adfdasfdasfads ")
               
               
       ),
