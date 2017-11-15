@@ -37,7 +37,7 @@ shinyUI(
                    dsfsafasdfdasfads/n
                      adfdasfdasfads "),
               hr(),
-              leafletOutput("mymap")
+              column(8,leafletOutput("mymap", height="600px"))
             
              
       ),

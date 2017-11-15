@@ -10,6 +10,7 @@ library(ggplot2)
 library(readr)
 library(leaflet)
 library(ggmap)
+library(leaflet)
 
 shinyServer(function(input, output, session) {
   
