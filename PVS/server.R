@@ -17,7 +17,7 @@ library(ggmap)
 shinyServer(function(input, output, session) {
   
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
-  data=data.frame(x=c(43.13, 43.24), y=c(-2.54,-2.91), id=c("place1", "place2"))
+  data=data.frame(y=c(43.13, 43.24), x=c(-2.54,-2.91), id=c("place1", "place2"))
   
   
   data_of_click <- reactiveValues(clickedMarker=NULL)
@@ -51,7 +51,7 @@ shinyServer(function(input, output, session) {
   
   output$mymap <- renderLeaflet({
    leaflet(jj) %>%
-      setView(lat=43, lng=-2.3, zoom=10)  %>% 
+      setView(lat=43, lng=-2.3, zoom=11)  %>% 
     addTiles() %>%  # Add default OpenStreetMap map tiles
       addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=8 , color="black",  
                        fillColor="red", stroke = TRUE, fillOpacity = 0.8)
