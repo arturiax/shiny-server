@@ -40,7 +40,7 @@ shinyServer(function(input, output, session) {
   )
   
   
-  output$mymap <- renderLeaflet({
+  output$map <- renderLeaflet({
     leaflet() %>%
       setView(lat=43, lng=-2.8, zoom=11)  %>% 
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%  # Add default OpenStreetMap map tiles
