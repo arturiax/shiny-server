@@ -41,7 +41,7 @@ shinyServer(function(input, output, session) {
   
   
   output$mymap <- renderLeaflet({
-    leaflet(jj) %>%
+    leaflet() %>%
       setView(lat=43, lng=-2.8, zoom=11)  %>% 
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%  # Add default OpenStreetMap map tiles
       addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=4 , color="black",  
