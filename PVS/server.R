@@ -17,7 +17,7 @@ library(ggmap)
 shinyServer(function(input, output, session) {
   
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
-  data=data.frame(y=c(43.13, 43.24), x=c(-2.54,-2.91), id=c("place1", "place2"))
+  data=data.frame(y=c(43, 43), x=c(-2,-3), id=c("place1", "place2"))
   
   
   data_of_click <- reactiveValues(clickedMarker=NULL)
