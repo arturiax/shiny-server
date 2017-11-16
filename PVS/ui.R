@@ -38,7 +38,7 @@ shinyUI(
                      adfdasfdasfads "),
               hr(),
               column(8,leafletOutput("mymap", height="600px")),
-              column(4,br(),br(),br(),br(),valueBoxOutput("puntos"))
+              column(4,br(),br(),br(),br(),plotOutput("plot"))
              
       ),
       
