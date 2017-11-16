@@ -26,15 +26,13 @@ shinyServer(function(input, output, session) {
   })
   
   
-  output$plot=renderPlot({
-    my_place=data_of_click$clickedMarker$id
-    if(is.null(my_place)){my_place="place1"}
-    if(my_place=="place1"){
-      plot(rnorm(1000), col=rgb(0.9,0.4,0.1,0.3), cex=3, pch=20)
-    }else{
-      barplot(rnorm(10), col=rgb(0.1,0.4,0.9,0.3))
-    }    
-  })
+  
+  
+  output$puntos <- renderValueBox({
+    my_place=data_of_click$clickedMarker
+    if(is.null(my_place)){my_place=33}
+     valueBox(my_place, "Puntos", icon = icon(iconpts()), color = colorpts(), width = 4)
+    })
 
   
   jj<- readRDS("/home/art/shiny-server/PVS/base")
