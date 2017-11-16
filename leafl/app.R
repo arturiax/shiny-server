@@ -1,50 +1,44 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-
 library(shiny)
+library(leaflet)
 
-# Define UI for application that draws a histogram
-ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Old Faithful Geyser Data"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
-      )
-   )
-)
-
-# Define server logic required to draw a histogram
 server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
-      
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+  
+  # build data with 2 places
+  data=data.frame(x=c(130, 128), y=c(-22,-26), id=c("place1", "place2"))
+  
+  # create a reactive value that will store the click position
+  data_of_click <- reactiveValues(clickedMarker=NULL)
+  
+  # Leaflet map with 2 markers
+  output$map <- renderLeaflet({
+    leaflet() %>% 
+      setView(lng=131 , lat =-25, zoom=4) %>%
+      addTiles(options = providerTileOptions(noWrap = TRUE)) %>%
+      addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=8 , color="black",  fillColor="red", stroke = TRUE, fillOpacity = 0.8)
+  })
+  
+  # store the click
+  observeEvent(input$map_marker_click,{
+    data_of_click$clickedMarker <- input$map_marker_click
+  })
+  
+  # Make a barplot or scatterplot depending of the selected point
+  output$plot=renderPlot({
+    my_place=data_of_click$clickedMarker$id
+    if(is.null(my_place)){my_place="place1"}
+    if(my_place=="place1"){
+      plot(rnorm(1000), col=rgb(0.9,0.4,0.1,0.3), cex=3, pch=20)
+    }else{
+      barplot(rnorm(10), col=rgb(0.1,0.4,0.9,0.3))
+    }    
+  })
 }
 
-# Run the application 
-shinyApp(ui = ui, server = server)
 
+ui <- fluidPage(
+  br(),
+  column(8,leafletOutput("map", height="600px")),
+  column(4,br(),br(),br(),br(),plotOutput("plot", height="300px")),
+  br()
+)
+shinyApp(ui = ui, server = server)
