@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
   
   
   output$puntos <- renderValueBox({
-    my_place=data_of_click$clickedMarker$latlng
+    my_place=data_of_click$clickedMarker$id
     if(is.null(my_place)){my_place=33}
      valueBox(my_place, "Puntos", icon = icon("medkit"), color = "blue", width = 4)
     })
