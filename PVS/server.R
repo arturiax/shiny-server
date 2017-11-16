@@ -29,14 +29,6 @@ shinyServer(function(input, output, session) {
   
   
   
-  
-  output$puntos <- renderValueBox({
-    my_place=data_of_click$clickedMarker$id
-    if(is.null(my_place)){my_place=33}
-     valueBox(my_place, "Puntos", icon = icon("medkit"), color = "blue", width = 4)
-    })
-
-  
   jj<- readRDS("/home/art/shiny-server/PVS/base")
   jj$direc_corta <- gsub(", Spain","", jj$formatted_address)
   jj$popup <- paste(sep = "<br/>",paste0("<b>",jj$nombre,"</b>"),jj$direc_corta)
@@ -48,15 +40,26 @@ shinyServer(function(input, output, session) {
   )
   
   
-  
   output$mymap <- renderLeaflet({
-   leaflet(jj) %>%
+    leaflet(jj) %>%
       setView(lat=43, lng=-2.2, zoom=11)  %>% 
-    addTiles() %>%  # Add default OpenStreetMap map tiles
+      addTiles(options = providerTileOptions(noWrap = TRUE)) %>%  # Add default OpenStreetMap map tiles
       addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=5 , color="black",  
                        fillColor="red", stroke = TRUE, fillOpacity = 0.8)
-   #addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
+    #addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
   })
+  
+  output$puntos <- renderValueBox({
+    my_place=data_of_click$clickedMarker$id
+    if(is.null(my_place)){my_place=33}
+     valueBox(my_place, "Puntos", icon = icon("medkit"), color = "blue", width = 4)
+    })
+
+ 
+  
+  
+  
+ 
   
  # 
  #output$puntos <- renderValueBox({
