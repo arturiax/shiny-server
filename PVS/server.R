@@ -31,7 +31,7 @@ shinyServer(function(input, output, session) {
   output$puntos <- renderValueBox({
     my_place=data_of_click$clickedMarker
     if(is.null(my_place)){my_place=33}
-     valueBox(my_place, "Puntos", icon = icon(iconpts()), color = colorpts(), width = 4)
+     valueBox(my_place, "Puntos", icon = icon("medkit", color = "blue", width = 4))
     })
 
   
@@ -49,9 +49,9 @@ shinyServer(function(input, output, session) {
   
   output$mymap <- renderLeaflet({
    leaflet(jj) %>%
-      setView(lat=43, lng=-2.3, zoom=11)  %>% 
+      setView(lat=43, lng=-2.2, zoom=11)  %>% 
     addTiles() %>%  # Add default OpenStreetMap map tiles
-      addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=8 , color="black",  
+      addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=5 , color="black",  
                        fillColor="red", stroke = TRUE, fillOpacity = 0.8)
    #addAwesomeMarkers(lng=~long, lat=~lat, icon = icons, popup=~popup, label=~nombre) 
   })
