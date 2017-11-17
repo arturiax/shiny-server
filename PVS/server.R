@@ -19,8 +19,8 @@ shinyServer(function(input, output, session) {
   base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
   jj<- readRDS("/home/art/shiny-server/PVS/base")
   
-  data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"))
-  
+  data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
+  consultantes<-base %>% group_by(UAP) %>% summarise(n())
   
   data_of_click <- reactiveValues(clickedMarker=NULL)
   
