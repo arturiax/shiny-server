@@ -50,7 +50,7 @@ shinyServer(function(input, output, session) {
     addAwesomeMarkers(data=data, ~x , ~y, layerId=~id, icon = icons, popup=~popup, label=~nombre) 
   })
   
-  output$plot=renderValueBox({
+  output$box=renderValueBox({
   my_place=data_of_click$clickedMarker$id
   if(is.null(my_place)){my_place="ELORRIO"}
    valueBox(consultantes$n[consultantes$UAP==my_place][1], "Consultantes", color="blue", width=5, icon=icon("male"))
