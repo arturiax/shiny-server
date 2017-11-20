@@ -100,7 +100,7 @@ shinyServer(function(input, output, session) {
     
   })
   
-  vis %>% bind_shiny("plot2")
+  vis %>% bind_shiny("plot2", "gg_ui")
   
   output$plot1 <-  renderPlot({
 
