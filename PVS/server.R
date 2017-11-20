@@ -19,7 +19,7 @@ base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", ";", escape_doubl
 
 base<-base[!is.na(base$Sexo),]
 
-
+base$grupo <-ifelse(base$grupo=="Control","Control", "Intervención")
 
 jj<- readRDS("/home/art/shiny-server/PVS/base")
 #jj<- readRDS("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/base") 
@@ -136,12 +136,12 @@ shinyServer(function(input, output, session) {
   
   output$plot4 <-  renderPlot({
 
-    if (estra5$input==2) base<-base %>% filter(UAP=="ARRIGORRIAGA")
-    else if (estra5$input==3) base<-base %>% filter(UAP=="BOLUETA")
-    else if (estra5$input==4) base<-base %>% filter(UAP=="LANDAKO")
+    if (input$estra5==2) base<-base %>% filter(UAP=="ARRIGORRIAGA")
+    else if (input$estra5==3) base<-base %>% filter(UAP=="BOLUETA")
+    else if (input$estra5==4) base<-base %>% filter(UAP=="LANDAKO")
     
-    if (estra6$input==2) base<-base %>% filter(Sexo=="Hombre")
-    else if (estra6$input==3) base<-base %>% filter(Sexo=="Mujer")
+    if (input$estra6==2) base<-base %>% filter(Sexo=="Hombre")
+    else if (input$estra6==3) base<-base %>% filter(Sexo=="Mujer")
     
     
     
