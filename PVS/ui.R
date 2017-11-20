@@ -37,9 +37,12 @@ shinyUI(
                    dsfsafasdfdasfads/n
                      adfdasfdasfads "),
               hr(),
-              column(8,leafletOutput("map", height="600px")),
-              column(4,br(),br(),br(),br(),valueBoxOutput("box"))
-             
+              column(8,leafletOutput("map", height="500px")),
+              column(4,br(),br(),br(),br(),valueBoxOutput("box")),
+              hr(),
+              column(4,valueBoxOutput("box1")),
+              column(4,valueBoxOutput("box2"))
+                           
       ),
       
       

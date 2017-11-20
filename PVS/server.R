@@ -21,6 +21,7 @@ shinyServer(function(input, output, session) {
   
   data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
   consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
+  consul<-base %>% group_by(UAP, Sexo) %>% summarise(n=n())
   
   data_of_click <- reactiveValues(clickedMarker=NULL)
   
@@ -44,7 +45,7 @@ shinyServer(function(input, output, session) {
   
   output$map <- renderLeaflet({
     leaflet() %>%
-      setView(lat=43, lng=-2.8, zoom=11)  %>% 
+      setView(lat=43.3, lng=-2.8, zoom=11)  %>% 
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%  # Add default OpenStreetMap map tiles
       #addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=8 , color="black",  fillColor="red", stroke = TRUE, fillOpacity = 0.8)
     addAwesomeMarkers(data=data, ~x , ~y, layerId=~id, icon = icons, popup=~popup, label=~nombre) 
@@ -56,7 +57,19 @@ shinyServer(function(input, output, session) {
    valueBox(consultantes$n[consultantes$UAP==my_place][1], "Consultantes", color="blue", width=5, icon=icon("male"))
    })
 
- 
+  output$box1=renderValueBox({
+    my_place=data_of_click$clickedMarker$id
+    if(is.null(my_place)){my_place="ELORRIO"}
+    valueBox(consul$n[consul$UAP==my_place][1], "Hombres", color="red", width=5, icon=icon("male"))
+  })
+  
+  output$box2=renderValueBox({
+    my_place=data_of_click$clickedMarker$id
+    if(is.null(my_place)){my_place="ELORRIO"}
+    valueBox(consul$n[consul$UAP==my_place][2], "Mujeres", color="red", width=5, icon=icon("male"))
+  })
+  
+  
   
   
   
