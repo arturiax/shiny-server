@@ -52,8 +52,7 @@ shinyUI(
         box(status="primary", 
               radioButtons("sexo", "Sexo",
                    choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
-                   selected = 1)
-          ),
+                   selected = 1),
         
       
       #box(title="Utilización año previo", status="primary", 
@@ -72,12 +71,12 @@ shinyUI(
       
       # ),
       
-      hr(),
+      hr()
       
       #fluidRow(                # Dynamic valueBoxes
        # valueBoxOutput("puntos"),     valueBoxOutput("riesgo")      )      ),
       
-     
+      ),
     tabItem(tabName ="resulta", 
     # Show a plot of the generated distribution
  
@@ -85,7 +84,7 @@ shinyUI(
       plotOutput('plot1')
       #h4("El número de puntos es:"),
       #h1(textOutput("punt"))
-    )
+    
    )
   )
 ))))
