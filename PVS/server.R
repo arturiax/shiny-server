@@ -14,11 +14,14 @@ library(dplyr)
 library(ggvis)
 
 base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
+base<-base[!is.na(base$Sexo),]
 jj<- readRDS("/home/art/shiny-server/PVS/base")
 
 data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
 consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
 consul<-base %>% group_by(UAP, Sexo) %>% summarise(n=n())
+
+
 shinyServer(function(input, output, session) {
   
  
@@ -105,10 +108,10 @@ shinyServer(function(input, output, session) {
   
   output$plot3 <-  renderPlot({
     
-    if(input$estra1==1) p<- ggplot(base, aes(x=UAP))
-    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo))
-    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo))
-    else if(input$estra1==4) p<- ggplot(base, aes(x=edad))
+    if(input$estra1==1) p<- ggplot(base, aes(x=UAP, color=UAP))
+    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo, color=Sexo))
+    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo, color=grupo))
+    else if(input$estra1==4) p<- ggplot(base, aes(x=edad, color=edad))
     
     p<- p +
       geom_bar(stat="count") +
@@ -118,8 +121,8 @@ shinyServer(function(input, output, session) {
     
     if(input$estra2==2) p<- p + facet_grid(~UAP)
     else if(input$estra2==3) p<- p + facet_grid(~Sexo)
-    else if(input$estra2==4) p<- p + facet_grid(~Grupo)
-    else if(input$estra2==5) p<- p + facet_grid(~Edad)
+    else if(input$estra2==4) p<- p + facet_grid(~grupo)
+    else if(input$estra2==5) p<- p + facet_grid(~edad)
     
     print(p)
   })
