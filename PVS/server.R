@@ -105,7 +105,7 @@ shinyServer(function(input, output, session) {
     
   })
   
-  vis %>% bind_shiny("plot1")
+  vis %>% bind_shiny("plot2")
   
   output$plot1 <-  renderPlot({
 

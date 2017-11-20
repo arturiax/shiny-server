@@ -55,7 +55,7 @@ shinyUI(
               radioButtons("sexo", "Sexo", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
                    selected = 1)),
         hr(),
-        ggvisOutput("plot1")
+        column(6,ggvisOutput("plot2"))
       )
         
       
