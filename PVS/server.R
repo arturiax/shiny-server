@@ -136,12 +136,12 @@ shinyServer(function(input, output, session) {
   
   output$plot4 <-  renderPlot({
 
-    if (estra5$input=2) base<-base %>% filter(UAP="ARRIGORRIAGA")
-    else if (estra5$input=3) base<-base %>% filter(UAP="BOLUETA")
-    else if (estra5$input=4) base<-base %>% filter(UAP="LANDAKO")
+    if (estra5$input==2) base<-base %>% filter(UAP=="ARRIGORRIAGA")
+    else if (estra5$input==3) base<-base %>% filter(UAP=="BOLUETA")
+    else if (estra5$input==4) base<-base %>% filter(UAP=="LANDAKO")
     
-    if (estra6$input=2) base<-base %>% filter(Sexo="Hombre")
-    else if (estra6$input=3) base<-base %>% filter(Sexo="Mujer")
+    if (estra6$input==2) base<-base %>% filter(Sexo=="Hombre")
+    else if (estra6$input==3) base<-base %>% filter(Sexo=="Mujer")
     
     
     
