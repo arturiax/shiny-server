@@ -12,9 +12,11 @@ library(leaflet)
 library(ggmap)
 library(dplyr)
 library(ggvis)
+library(lubridate)
 
-base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
-base<-base[!is.na(base$Sexo),]
+base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", 
+                 ";", escape_double = FALSE, locale = locale(date_names = "es", 
+                                                             date_format = " %d/%m/%Y"), trim_ws = TRUE)
 jj<- readRDS("/home/art/shiny-server/PVS/base")
 
 data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
@@ -108,10 +110,10 @@ shinyServer(function(input, output, session) {
   
   output$plot3 <-  renderPlot({
     
-    if(input$estra1==1) p<- ggplot(base, aes(x=UAP, color=UAP))
-    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo, color=Sexo))
-    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo, color=grupo))
-    else if(input$estra1==4) p<- ggplot(base, aes(x=edad, color=edad))
+    if(input$estra1==1) p<- ggplot(base, aes(x=UAP, fill=UAP))
+    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo, fill=Sexo))
+    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo, fill=grupo))
+    else if(input$estra1==4) p<- ggplot(base, aes(x=edad, fill=edad))
     
     p<- p +
       geom_bar(stat="count") +

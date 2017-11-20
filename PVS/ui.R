@@ -88,6 +88,24 @@ shinyUI(
  
     fluidRow( 
       h2("Grafico alcance del programa"),
+      box(status="primary", 
+          radioButtons("estra1", "Estratificar por:", choices = list("Tipo de hábito" = 1, "Grado de adopción"=2), 
+                       selected = 1)),
+      hr(),
+      box(status="primary", 
+          radioButtons("estra2", "SEXO: Realizar análisis en:", choices = list("Todos" =  1, "Hombres" = 2, "Mujeres" = 3), 
+                       selected = 1)),
+      hr(),
+      box(status="primary", 
+          radioButtons("estra2", "CENTRO: Realizar análisis en:", choices = list("Todos" =  1, "Arrigorriaga" = 2, "Bolueta" = 3, "Landako"=4), 
+                       selected = 1)),
+      hr(),
+      box(status="primary", 
+          radioButtons("estra2", "GRUPO: Realizar análisis en:", choices = list("Todos" =  1, "Hombres" = 2, "Mujeres" = 3), 
+                       selected = 1)),
+      hr(),
+      
+      
       plotOutput('plot1') )
       #h4("El número de puntos es:"),
       #h1(textOutput("punt"))
