@@ -89,24 +89,24 @@ shinyUI(
     fluidRow( 
       h2("Grafico alcance del programa"),
       box(status="primary", 
-          radioButtons("estra1", "Estratificar por:", choices = list("Tipo de hábito" = 1, "Grado de adopción"=2), 
+          radioButtons("estra3", "Estratificar por:", choices = list("Tipo de hábito" = 1, "Grado de adopción"=2), 
                        selected = 1)),
       hr(),
       box(status="primary", 
-          radioButtons("estra2", "SEXO: Realizar análisis en:", choices = list("Todos" =  1, "Hombres" = 2, "Mujeres" = 3), 
+          radioButtons("estra4", "Estratificar también por:", choices = list("Nada" =  1, "Centros" = 2, "Sexo" = 3, "Grupo" = 4, "Edad"=5), 
                        selected = 1)),
       hr(),
       box(status="primary", 
-          radioButtons("estra2", "CENTRO: Realizar análisis en:", choices = list("Todos" =  1, "Arrigorriaga" = 2, "Bolueta" = 3, "Landako"=4), 
+          radioButtons("estra5", "CENTRO: Realizar análisis en:", choices = list("Todos" =  1, "Arrigorriaga" = 2, "Bolueta" = 3, "Landako"=4), 
                        selected = 1)),
       hr(),
       box(status="primary", 
-          radioButtons("estra2", "GRUPO: Realizar análisis en:", choices = list("Todos" =  1, "Hombres" = 2, "Mujeres" = 3), 
+          radioButtons("estra6", "SEXO: Realizar análisis en:", choices = list("Todos" =  1, "Hombres" = 2, "Mujeres" = 3), 
                        selected = 1)),
       hr(),
       
       
-      plotOutput('plot1') )
+      plotOutput('plot4') )
       #h4("El número de puntos es:"),
       #h1(textOutput("punt"))
     

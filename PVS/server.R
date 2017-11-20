@@ -14,10 +14,15 @@ library(dplyr)
 library(ggvis)
 library(lubridate)
 
-base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", 
-                 ";", escape_double = FALSE, locale = locale(date_names = "es", 
-                                                             date_format = " %d/%m/%Y"), trim_ws = TRUE)
+base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
+#base<-read_delim("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
+
+base<-base[!is.na(base$Sexo),]
+
+
+
 jj<- readRDS("/home/art/shiny-server/PVS/base")
+#jj<- readRDS("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/base") 
 
 data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
 consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
@@ -129,8 +134,14 @@ shinyServer(function(input, output, session) {
     print(p)
   })
   
-  output$plot1 <-  renderPlot({
+  output$plot4 <-  renderPlot({
 
+    if (estra5$input=2) base<-base %>% filter(UAP="ARRIGORRIAGA")
+    else if (estra5$input=3) base<-base %>% filter(UAP="BOLUETA")
+    else if (estra5$input=4) base<-base %>% filter(UAP="LANDAKO")
+    
+    if (estra6$input=2) base<-base %>% filter(Sexo="Hombre")
+    else if (estra6$input=3) base<-base %>% filter(Sexo="Mujer")
     
     
     
