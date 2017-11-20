@@ -11,7 +11,7 @@ library(readr)
 library(leaflet)
 library(ggmap)
 library(dplyr)
-
+library(ggvis)
 
 
 shinyServer(function(input, output, session) {
@@ -45,7 +45,7 @@ shinyServer(function(input, output, session) {
   
   output$map <- renderLeaflet({
     leaflet() %>%
-      setView(lat=43.2, lng=-2.85, zoom=11)  %>% 
+      setView(lat=43.2, lng=-2.8, zoom=11)  %>% 
       addTiles(options = providerTileOptions(noWrap = TRUE)) %>%  # Add default OpenStreetMap map tiles
       #addCircleMarkers(data=data, ~x , ~y, layerId=~id, popup=~id, radius=8 , color="black",  fillColor="red", stroke = TRUE, fillOpacity = 0.8)
     addAwesomeMarkers(data=data, ~x , ~y, layerId=~id, icon = icons, popup=~popup, label=~nombre) 
@@ -91,6 +91,21 @@ shinyServer(function(input, output, session) {
  
  #output$punt <- renderText({ puntosa()  })
  
+  vis <- reactive({
+  
+    
+    faithful %>%
+      ggvis(~waiting, ~eruptions, fillOpacity := 0.5,
+            shape := input_select(label = "Choose shape:",
+                                  choices = c("circle", "square", "cross",
+                                              "diamond", "triangle-up", "triangle-down")),
+            fill := input_select(label = "Choose color:",
+                                 choices = c("black", "red", "blue", "green"))) %>%
+      layer_points()  
+    
+  })
+  
+  vis %>% bind_shiny("plot1")
   
   output$plot1 <-  renderPlot({
 

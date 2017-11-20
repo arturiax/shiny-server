@@ -10,6 +10,7 @@ library(shinythemes)
 library(shinydashboard)
 library(readr)
 library(leaflet)
+library(ggvis)
 
 
 shinyUI(
@@ -52,7 +53,9 @@ shinyUI(
         
         box(status="primary", 
               radioButtons("sexo", "Sexo", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
-                   selected = 1))
+                   selected = 1)),
+        hr(),
+        ggvisOutput("plot1")
       )
         
       
