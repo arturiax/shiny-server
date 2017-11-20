@@ -17,14 +17,14 @@ shinyUI(
     dashboardHeader(title = "PVS"),
     dashboardSidebar(
       sidebarMenu(
-        menuItem("PVS", tabName = "finger", icon = icon("info-circle")),
+        menuItem("PVS", tabName = "pvs", icon = icon("info-circle")),
         menuItem("Población estudio", tabName = "Poblacion", icon = icon("male")),
         menuItem("Resultados encuesta", icon = icon("bar-chart"), tabName = "resulta")
       )),
     
    dashboardBody(
     tabItems( 
-      tabItem(tabName="finger", 
+      tabItem(tabName="pvs", 
               h1("PROGRAMA PRESCRIBE VIDA SALUDABLE"),
               hr(),
               h4("El programa vida saludable PVS , bla blab bla bla bla bla bla ................
@@ -47,12 +47,13 @@ shinyUI(
       
       
       tabItem(tabName = "Poblacion",
-      fluidRow(        
+      fluidRow(   
+        h2("Gráfico población estudio PVS"),
         
         box(status="primary", 
               radioButtons("sexo", "Sexo",
                    choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
-                   selected = 1),
+                   selected = 1)
         
       
       #box(title="Utilización año previo", status="primary", 
@@ -71,17 +72,16 @@ shinyUI(
       
       # ),
       
-      hr()
-      
-      #fluidRow(                # Dynamic valueBoxes
+           #fluidRow(                # Dynamic valueBoxes
        # valueBoxOutput("puntos"),     valueBoxOutput("riesgo")      )      ),
       
       ),
     tabItem(tabName ="resulta", 
     # Show a plot of the generated distribution
  
-   
-      plotOutput('plot1')
+    fluidRow( 
+      h2("Grafico alcance del programa"),
+      plotOutput('plot1') )
       #h4("El número de puntos es:"),
       #h1(textOutput("punt"))
     
