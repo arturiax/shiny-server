@@ -52,11 +52,14 @@ shinyUI(
         h2("Gráfico población estudio PVS"),
         
         box(status="primary", 
-              radioButtons("sexo", "Sexo", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
+              radioButtons("estra1", "Estratificar por:", choices = list("Centros" = 1, "Sexo" = 2, "Grupo" = 3, "Edad"=4), 
                    selected = 1)),
         hr(),
-        column(6,ggvisOutput("plot2")),
-        column(5, uiOutput("gg_ui"))
+        box(status="primary", 
+            radioButtons("estra2", "Estratificar también por:", choices = list("Nada" =  1, "Centros" = 2, "Sexo" = 3, "Grupo" = 4, "Edad"=5), 
+                         selected = 1)),
+        hr(),
+        column(6,plotOutput("plot3"))
       )
         
       

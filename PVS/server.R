@@ -13,15 +13,15 @@ library(ggmap)
 library(dplyr)
 library(ggvis)
 
+base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
+jj<- readRDS("/home/art/shiny-server/PVS/base")
 
+data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
+consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
+consul<-base %>% group_by(UAP, Sexo) %>% summarise(n=n())
 shinyServer(function(input, output, session) {
   
-  base<-read_csv2("/home/art/shiny-server/PVS/pruevashiny.csv")
-  jj<- readRDS("/home/art/shiny-server/PVS/base")
-  
-  data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
-  consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
-  consul<-base %>% group_by(UAP, Sexo) %>% summarise(n=n())
+ 
   
   data_of_click <- reactiveValues(clickedMarker=NULL)
   
@@ -95,12 +95,34 @@ shinyServer(function(input, output, session) {
   
     
     faithful %>%
-      ggvis(~waiting, ~eruptions, fill := input_radiobuttons(label= "Choose color:", choices=  c("black", "red", "blue", "green") ) )%>%
+      ggvis(~waiting, ~eruptions, fill := input_radiobuttons(label= "Choose tamaño:", choices=  c("black", "red", "blue", "green") ) )%>%
       layer_points()
     
   })
   
   vis %>% bind_shiny("plot2", "gg_ui")
+  
+  
+  output$plot3 <-  renderPlot({
+    
+    if(input$estra1==1) p<- ggplot(base, aes(x=UAP))
+    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo))
+    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo))
+    else if(input$estra1==4) p<- ggplot(base, aes(x=edad))
+    
+    p<- p +
+      geom_bar(stat="count") +
+      ylab("N") +
+      theme_light()+
+      scale_x_discrete(breaks=NULL)
+    
+    if(input$estra2==2) p<- p + facet_grid(~UAP)
+    else if(input$estra2==3) p<- p + facet_grid(~Sexo)
+    else if(input$estra2==4) p<- p + facet_grid(~Grupo)
+    else if(input$estra2==5) p<- p + facet_grid(~Edad)
+    
+    print(p)
+  })
   
   output$plot1 <-  renderPlot({
 
