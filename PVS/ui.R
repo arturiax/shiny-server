@@ -51,9 +51,8 @@ shinyUI(
         h2("Gráfico población estudio PVS"),
         
         box(status="primary", 
-              radioButtons("sexo", "Sexo",
-                   choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
-                   selected = 1)
+              radioButtons("sexo", "Sexo", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
+                   selected = 1))
         
       
       #box(title="Utilización año previo", status="primary", 
@@ -87,5 +86,5 @@ shinyUI(
     
    )
   )
-)))))
+))))
 
