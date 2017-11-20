@@ -13,6 +13,7 @@ library(ggmap)
 library(dplyr)
 library(ggvis)
 library(lubridate)
+library(tidyr)
 
 base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
 #base<-read_delim("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
@@ -27,6 +28,13 @@ jj<- readRDS("/home/art/shiny-server/PVS/base")
 data=data.frame(x=jj$long, y=jj$lat, id=c("ELORRIO", "BOLUETA", "LANDAKO", "OTXARKOAGA", "ETXEBARRI", "ARRIGORRIAGA"), nombre=jj$nombre)
 consultantes<-base %>% group_by(UAP) %>% summarise(n=n())
 consul<-base %>% group_by(UAP, Sexo) %>% summarise(n=n())
+
+
+mes <- function(x) {
+  dmy(paste("1", month(x), year(x)))
+}
+
+?gather
 
 
 shinyServer(function(input, output, session) {
