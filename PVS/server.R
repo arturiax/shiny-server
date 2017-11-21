@@ -120,13 +120,18 @@ shinyServer(function(input, output, session) {
   
   vis %>% bind_shiny("plot2", "gg_ui")
   
-  
+  # slider <- reactive({
+  #   data.frame(edadmin=input$Edad[1], edadmax=input$Edad[2])
+  # })
+  # 
   output$plot3 <-  renderPlot({
     
-    if(input$estra1==1) p<- ggplot(base, aes(x=UAP, fill=UAP))
-    else if(input$estra1==2) p<- ggplot(base, aes(x=Sexo, fill=Sexo))
-    else if(input$estra1==3) p<- ggplot(base, aes(x=grupo, fill=grupo))
-    else if(input$estra1==4) p<- ggplot(base, aes(x=edad, fill=edad))
+    bas<-filter(base, edad_consult>input$Edad[1], edad_consult<(input$Edad[2]+1))
+    
+    if(input$estra1==1) p<- ggplot(bas, aes(x=UAP, fill=UAP))
+    else if(input$estra1==2) p<- ggplot(bas, aes(x=Sexo, fill=Sexo))
+    else if(input$estra1==3) p<- ggplot(bas, aes(x=grupo, fill=grupo))
+    else if(input$estra1==4) p<- ggplot(bas, aes(x=edad, fill=edad))
     
     p<- p +
       geom_bar(stat="count") +
@@ -144,12 +149,12 @@ shinyServer(function(input, output, session) {
   
   output$plot4 <-  renderPlot({
 
-    if (input$estra5==2) base<-base %>% filter(UAP=="ARRIGORRIAGA")
-    else if (input$estra5==3) base<-base %>% filter(UAP=="BOLUETA")
-    else if (input$estra5==4) base<-base %>% filter(UAP=="LANDAKO")
+    if (input$estra5==2) bas<-bas %>% filter(UAP=="ARRIGORRIAGA")
+    else if (input$estra5==3) bas<-bas %>% filter(UAP=="BOLUETA")
+    else if (input$estra5==4) bas<-bas %>% filter(UAP=="LANDAKO")
     
-    if (input$estra6==2) base<-base %>% filter(Sexo=="Hombre")
-    else if (input$estra6==3) base<-base %>% filter(Sexo=="Mujer")
+    if (input$estra6==2) bas<-bas %>% filter(Sexo=="Hombre")
+    else if (input$estra6==3) bas<-bas %>% filter(Sexo=="Mujer")
     
     
     

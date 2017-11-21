@@ -59,6 +59,10 @@ shinyUI(
             radioButtons("estra2", "Estratificar también por:", choices = list("Nada" =  1, "Centros" = 2, "Sexo" = 3, "Grupo" = 4, "Edad"=5), 
                          selected = 1)),
         hr(),
+        sliderInput("Edad", "Edad:",
+                    min = 10, max = 80,
+                    value = c(10,80)),
+        
         column(6,plotOutput("plot3"))
       )
         
