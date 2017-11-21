@@ -41,3 +41,18 @@ output$phonePlot <- renderPlot({
 )
 ```
 
+cxcczxcx<zcxzcx<czxccddsac
+
+fdsfsdafdasfasdfasdf
+
+##otrasd  cosas
+dsfdsafdasfasdf
+dfsdafasdfasdfsdafasdfdsaf
+dfdsfdsafasdfadsf
+fdsfsdafasdfdsafdsafdasfdsafsdafs    
+
+dsfsdsf 
+
+
+dfsdfasd
+
