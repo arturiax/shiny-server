@@ -1,4 +1,4 @@
-sac_sex <- function(z) {
+curva_pro <- function(z) {
 
    
 varis<-with(z,list(fch_a1, fch_a1_af, fch_a1_dt, fch_a1_tb, fch_a2, fch_a2_af, fch_a2_dt, fch_a2_tb, fch_a4, fch_a4_af, fch_a4_dt, fch_a4_tb))

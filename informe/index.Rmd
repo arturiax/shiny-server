@@ -16,7 +16,7 @@ To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authorin
 
 You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
 
-```{r eruptions, echo=FALSE}
+```{r message=FALSE, warning=FALSE, echo=FALSE}
 library(ggplot2)
 library(readr)
 library(dplyr)
@@ -34,28 +34,58 @@ nm <- (as.Date("2016-05-01")%--%max(base$Fecha_Cita__yyyymmdd_))%/%months(1)
 
 fechas <- as.Date("2016-05-01") + 0:nm * months(1)
 
-source("funciones.R")
+source("/home/art/shiny-server/funciones.R")
+
+```
 
 
-shinyApp( ui= fluidPage(
-  inputPanel( h3("Filtrar:"),
-  radioButtons("sexo", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
+```{r eruptions, echo=FALSE, fig.height=10, fig.width=10}
+
+shinyApp( ui= fixedPage(
+  column(6,inputPanel( h3("Filtrar:"),
+  radioButtons("Sexo", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
                    selected = 1),
   
-  sliderInput("edad", label = "Edad:",
-              min = 10, max = 81, value = c(10,80))
-),
-plotOutput("phonePlot", height=270)
+  sliderInput("Edad", label = "Edad:",
+              min = 10, max = 80, value = c(10,80))
+     ),
+
+inputPanel( h3("Estratificar por:"),
+       radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3), 
+                   selected = 1))
+  ),
+column(1),
+column(5, inputPanel( h3("Analizar:"),
+   checkboxGroupInput("Habitos", label = h4("Hábitos"), 
+    choices = list("A1 (al menos un hábito)" = "A1", "A1 Actividad física" = "A1_AF", "A1 Dieta" = "A1_DT", 
+                   "A1 Tabaco" = "A1_TB")))),       
+
+
+plotOutput("grafiPlot", height=470)
 ),
 
 server = function(input, output) {
 
-output$phonePlot <- renderPlot({
-  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
-       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+output$grafiPlot <- renderPlot({
   
-  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
-  lines(dens, col = "blue")
+  bas<-filter(base, edad_consult>input$Edad[1], edad_consult<(input$Edad[2]+1))
+  
+  if (input$Sexo == 2)  bas <- bas %>% filter(Sexo == "Hombre")
+  if (input$Sexo == 3)  bas <- bas %>% filter(Sexo == "Mujer")
+  
+  if (input$Estra == 1) bas <- bas %>% curva_pro() %>% gather(habito, porcen, -fechas)
+  if (input$Estra == 2) bas <- bas %>% split(bas$Sexo) %>% lapply(curva_pro) %>% bind_rows(.id="Sexo") %>%  
+    gather(habito,porcen, -c(fechas, Sexo))
+  if (input$Estra == 3) bas <- bas %>% split(bas$edad) %>% lapply(curva_pro) %>% bind_rows(.id="Edad") %>% gather(habito, porcen, -c(fechas, Edad))
+  
+  bas <- bas %>%  filter(habito %in% input$Habitos)
+  
+  p <- ggplot(bas, aes(x=fechas, y = porcen, col = habito)) + geom_line()
+  if (input$Estra == 2) p <- p + facet_wrap(~Sexo)
+  if (input$Estra == 3) p <- p + facet_wrap(~Edad)
+  
+  print(p)
+  
 })
 }  
 )
