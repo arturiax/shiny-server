@@ -1,20 +1,13 @@
 ---
-title: "Untitled"
-author: "Arturo"
-date: "21/11/2017"
-output: html_document
+title: "Informe PVS"
+author: "UIAPB"
+date: "18/12/2017"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
 runtime: shiny
 ---
 
-
-
-This R Markdown document is made interactive using Shiny. Unlike the more traditional workflow of creating static reports, you can now create documents that allow your readers to change the assumptions underlying your analysis and see the results immediately. 
-
-To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
-
-## Inputs and Outputs
-
-You can embed Shiny inputs and outputs in your document. Outputs are automatically updated whenever inputs change.  This demonstrates how a standard R plot can be made interactive by wrapping it in the Shiny `renderPlot` function. The `selectInput` and `sliderInput` functions create the input widgets used to drive the plot.
 
 ```{r message=FALSE, warning=FALSE, echo=FALSE}
 library(ggplot2)
@@ -22,7 +15,7 @@ library(readr)
 library(dplyr)
 library(lubridate)
 library(tidyr)
-
+library(flexdashboard)
 
 base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
 #base<-read_delim("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
@@ -38,45 +31,53 @@ source("/home/art/shiny-server/funciones.R")
 
 ```
 
+# Introduction {.sidebar}
+El informe PVS bla bla bla fdsfdasfdasfasd        sdfasdfdsafasdf
+sdfsdfsdafasd     
+y esto y lo otro
 
-```{r eruptions, echo=FALSE, fig.height=10, fig.width=10}
 
-shinyApp( ui= fixedPage(
-  column(6,inputPanel( h3("Filtrar:"),
+# Curva de progreso
+
+## Row 1
+
+### 
+```{r echo=FALSE}
+
+  inputPanel("Filtrar:",
   radioButtons("Sexo", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
                    selected = 1),
   
   sliderInput("Edad", label = "Edad:",
-              min = 10, max = 80, value = c(10,80))
-     ),
-
-inputPanel( h3("Estratificar por:"),
-       radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3), 
+              min = 10, max = 80, value = c(10,80)))
+     
+ inputPanel("Estratificar:",
+ radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3), 
                    selected = 1))
-  ),
-column(1),
-column(5, inputPanel( h3("Analizar:"),
-   checkboxGroupInput("Habitos", label = h4("Hábitos"), 
-    choices = list("A1 (al menos un hábito)" = "A1", "A1 Actividad física" = "A1_AF", "A1 Dieta" = "A1_DT", 
-                   "A1 Tabaco" = "A1_TB")))),       
+```
+  
+  
+### Analizar  
+```{r, echo = FALSE}
+  inputPanel( h3("Analizar:"),
+    checkboxGroupInput("Habitos", label = h4("Hábitos"), 
+     choices = list("A1 (al menos un hábito)" = "A1", "A1 Actividad física" = "A1_AF", "A1 Dieta" = "A1_DT", 
+                    "A1 Tabaco" = "A1_TB")))       
+```
 
-
-plotOutput("grafiPlot", height=470)
-),
-
-server = function(input, output) {
-
-output$grafiPlot <- renderPlot({
+## Gráfico
+```{r, echo = FALSE}
+renderPlot({
   
   bas<-filter(base, edad_consult>input$Edad[1], edad_consult<(input$Edad[2]+1))
   
   if (input$Sexo == 2)  bas <- bas %>% filter(Sexo == "Hombre")
   if (input$Sexo == 3)  bas <- bas %>% filter(Sexo == "Mujer")
   
-  if (input$Estra == 1) bas <- bas %>% curva_pro() %>% gather(habito, porcen, -fechas)
-  if (input$Estra == 2) bas <- bas %>% split(bas$Sexo) %>% lapply(curva_pro) %>% bind_rows(.id="Sexo") %>%  
+  if (input$Estra == 1) bas <- bas %>% curva_pro(fechas) %>% gather(habito, porcen, -fechas)
+  if (input$Estra == 2) bas <- bas %>% split(bas$Sexo) %>% lapply(curva_pro, fechas) %>% bind_rows(.id="Sexo") %>%  
     gather(habito,porcen, -c(fechas, Sexo))
-  if (input$Estra == 3) bas <- bas %>% split(bas$edad) %>% lapply(curva_pro) %>% bind_rows(.id="Edad") %>% gather(habito, porcen, -c(fechas, Edad))
+  if (input$Estra == 3) bas <- bas %>% split(bas$edad) %>% lapply(curva_pro, fechas) %>% bind_rows(.id="Edad") %>% gather(habito, porcen, -c(fechas, Edad))
   
   bas <- bas %>%  filter(habito %in% input$Habitos)
   
@@ -87,25 +88,22 @@ output$grafiPlot <- renderPlot({
   print(p)
   
 })
-}  
-)
+
 ```
 
-cxcczxcx<zcxzcx<czxccddsac
 
-fdsfsdafdasfasdfasdf
 
-##otrasd  cosas
-dsfdsafdasfasdf
-dfsdafasdfasdfsdafasdfdsaf
-dfdsfdsafasdfadsf
-fdsfsdafasdfdsafdsafdasfdsafsdafs    
 
-dsfsdsf 
 
-# dsfsdafdas sdfsdaf sdfsd
-cxz  xc<czx
-sdadsa
 
-dfsdfasd
+
+
+
+
+
+
+
+
+
+
 
