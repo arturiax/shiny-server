@@ -5,6 +5,7 @@ date: "18/12/2017"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
+    logo: logo.png
 runtime: shiny
 ---
 
