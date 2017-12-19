@@ -33,17 +33,16 @@ source("/home/art/shiny-server/funciones.R")
 
 ```
 
-# Introduction {.sidebar}
+# Introduction {.sidebar data-width=300}
 
-(El informe PVS bla bla bla fdsfdasfdasfasd        sdfasdfdsafasdf
-sdfsdfsdafasd     
-y esto y lo otro) 
+El informe PVS representa 2 indicadores(pestañas azules de la parte superior) , que os serán de utilidad para continuar trabajando en la mejora contínua del programa en el centro:
+
+* La curva de progreso de vuestra actividad hasta el momento. 
+* La actividad mensual del centro. 
+
+En ambos casos podeis elegir que acciones (A1, A2, A4) y hábitos (Actividad física, dieta, tabaco) analizar, si restringuir el análisis solo a uno de los sexos o a un rango de edades así como efectuar el análisis separado por sexo, grupos de edad o cupos.
 
 
-sdfsdafsdafsdafasdfsda  sdafsdafs a     
-fsdfsdfsda sdfsdafsd f     
-
-dsfsdfsdafdas
 
 
 
@@ -60,24 +59,21 @@ dsfsdfsdafdas
 
 # Curva de progreso
 
-## Row 1 {data-height=250}
+## Row 1 {data-height=220}
 
-### 
+### Filtrar
 ```{r echo=FALSE}
 
-  inputPanel("Filtrar:",
-  radioButtons("Sexo", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
-                   selected = 1),
+  inputPanel(radioButtons("Sexo", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), selected = 1),
   
   sliderInput("Edad", label = "Edad:",
               min = 10, max = 80, value = c(10,80)))
 ```
 
-### 
+### Estratificar
 ```{r echo=FALSE}
      
- inputPanel("Estratificar:",
- radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3, "Cupos" = 4), 
+ inputPanel(radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3, "Cupos" = 4), 
                    selected = 1))
 ```
   
@@ -107,7 +103,7 @@ renderPlotly({
   if (input$Estra == 3) p <- p + facet_wrap(~Edad)
   if (input$Estra == 4) p <- p + facet_wrap(~Cupo)
   
-  p <- ggplotly(p, height=600)
+  p <- ggplotly(p, height=500)
   
   print(p)
   
@@ -117,7 +113,7 @@ renderPlotly({
 
 # Actividad
 
-## Row 1 {data-height=250}
+## Row 1 {data-height=220}
 
 ### 
 ```{r echo=FALSE}
