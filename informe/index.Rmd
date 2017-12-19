@@ -76,7 +76,7 @@ dsfsdfsdafdas
 ```{r echo=FALSE}
      
  inputPanel("Estratificar:",
- radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3), 
+ radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3, "Cupos" = 4), 
                    selected = 1))
 ```
   
@@ -86,7 +86,9 @@ dsfsdfsdafdas
 
 renderPlotly({
   
+  
   bas<-filter(base, edad_consult>input$Edad[1], edad_consult<(input$Edad[2]+1))
+  bas<- bas %>% filter(UAP=="ARRIGORRIAGA")
   
   if (input$Sexo == 2)  bas <- bas %>% filter(Sexo == "Hombre")
   if (input$Sexo == 3)  bas <- bas %>% filter(Sexo == "Mujer")
@@ -95,12 +97,14 @@ renderPlotly({
   if (input$Estra == 2) bas <- bas %>% split(bas$Sexo) %>% lapply(curva_pro, fechas) %>% bind_rows(.id="Sexo") %>%  
     gather(habito,porcen, -c(fechas, Sexo))
   if (input$Estra == 3) bas <- bas %>% split(bas$edad) %>% lapply(curva_pro, fechas) %>% bind_rows(.id="Edad") %>% gather(habito, porcen, -c(fechas, Edad))
+  if (input$Estra == 4) bas <- bas %>% split(bas$codcup) %>% lapply(curva_pro, fechas) %>% bind_rows(.id="Cupo") %>% gather(habito, porcen, -c(fechas, Cupo))
   
   bas <- bas %>%  filter(habito %in% input$Habitos)
   
-  p <- ggplot(bas, aes(x=fechas, y = porcen, col = habito, text = as.Date(fechas))) + geom_line()
+  p <- ggplot(bas)+ geom_line(aes(x=fechas, y = porcen,col = habito)) + ylab("Porcentaje")
   if (input$Estra == 2) p <- p + facet_wrap(~Sexo)
   if (input$Estra == 3) p <- p + facet_wrap(~Edad)
+  if (input$Estra == 4) p <- p + facet_wrap(~Cupo)
   
   p <- ggplotly(p, height=600)
   
@@ -110,7 +114,62 @@ renderPlotly({
 
 ```
 
+# Actividad
 
+## Row 1 {data-height=250}
+
+### 
+```{r echo=FALSE}
+
+  inputPanel("Filtrar:",
+  radioButtons("Sexo2", "Sexo:", choices = list("Todos" = 1, "Hombres" = 2, "Mujeres" = 3), 
+                   selected = 1),
+  
+  sliderInput("Edad2", label = "Edad:",
+              min = 10, max = 80, value = c(10,80)))
+```
+
+### 
+```{r echo=FALSE}
+     
+ inputPanel("Estratificar:",
+ radioButtons("Estra2", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3, "Cupos" = 4), 
+                   selected = 1))
+```
+  
+
+## Gráfico  {data-height=500}
+```{r echo=FALSE, fig.height=3, fig.width=3}
+
+renderPlotly({
+  
+  
+  bas<-filter(base, edad_consult>input$Edad2[1], edad_consult<(input$Edad2[2]+1))
+  bas<- bas %>% filter(UAP=="ARRIGORRIAGA")
+  
+  if (input$Sexo2 == 2)  bas <- bas %>% filter(Sexo == "Hombre")
+  if (input$Sexo2 == 3)  bas <- bas %>% filter(Sexo == "Mujer")
+  
+  if (input$Estra2 == 1) bas <- bas %>% actividad(fechas) %>% gather(habito, porcen, -fechas)
+  if (input$Estra2 == 2) bas <- bas %>% split(bas$Sexo) %>% lapply(actividad, fechas) %>% bind_rows(.id="Sexo") %>%  
+    gather(habito,porcen, -c(fechas, Sexo))
+  if (input$Estra2 == 3) bas <- bas %>% split(bas$edad) %>% lapply(actividad, fechas) %>% bind_rows(.id="Edad") %>% gather(habito, porcen, -c(fechas, Edad))
+  if (input$Estra2 == 4) bas <- bas %>% split(bas$codcup) %>% lapply(actividad, fechas) %>% bind_rows(.id="Cupo") %>% gather(habito, porcen, -c(fechas, Cupo))
+  
+  bas <- bas %>%  filter(habito %in% input$Habitos)
+  
+  p <- ggplot(bas)+ geom_line(aes(x=fechas, y = porcen,col = habito)) + ylab("N")
+  if (input$Estra2 == 2) p <- p + facet_wrap(~Sexo)
+  if (input$Estra2 == 3) p <- p + facet_wrap(~Edad)
+  if (input$Estra2 == 4) p <- p + facet_wrap(~Cupo)
+  
+  p <- ggplotly(p, height=600)
+  
+  print(p)
+  
+})
+
+```
 
 
 
