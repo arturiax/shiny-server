@@ -5,7 +5,7 @@ varis<-with(z,list(fch_a1, fch_a1_af, fch_a1_dt, fch_a1_tb, fch_a2, fch_a2_af, f
   
 sacar_por<- function(y) {
 y <- ifelse(is.na(y),as.Date("3999-01-01"), y)
-sapply(fec, function(x) {mean(y<=x)})
+sapply(fec, function(x) {100 * mean(y<=x)})
 }
 rr<-sapply(varis, sacar_por)
 kk<-as.data.frame(cbind(fec, rr))

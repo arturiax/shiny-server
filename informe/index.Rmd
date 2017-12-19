@@ -16,6 +16,7 @@ library(dplyr)
 library(lubridate)
 library(tidyr)
 library(flexdashboard)
+library(plotly)
 
 base<-read_delim("/home/art/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
 #base<-read_delim("/media/Datos/Data_science/Mis proyectos/shiny-server/PVS/pruevashiny.csv", ";", escape_double = FALSE, locale = locale(date_names = "es", date_format = " %d/%m/%Y"), trim_ws = TRUE)
@@ -32,14 +33,33 @@ source("/home/art/shiny-server/funciones.R")
 ```
 
 # Introduction {.sidebar}
-El informe PVS bla bla bla fdsfdasfdasfasd        sdfasdfdsafasdf
+
+(El informe PVS bla bla bla fdsfdasfdasfasd        sdfasdfdsafasdf
 sdfsdfsdafasd     
-y esto y lo otro
+y esto y lo otro) 
+
+
+sdfsdafsdafsdafasdfsda  sdafsdafs a     
+fsdfsdfsda sdfsdafsd f     
+
+dsfsdfsdafdas
+
+
+
+### Analizar  
+```{r, echo = FALSE}
+  inputPanel(checkboxGroupInput("Habitos", label = h4("Hábitos"), 
+     choices = list("A1 (al menos un hábito)" = "A1", "A1 Actividad física" = "A1_AF", "A1 Dieta" = "A1_DT", 
+                    "A1 Tabaco" = "A1_TB", "A2 (al menos un hábito)" = "A2", "A2 Actividad física" = "A2_AF", "A2 Dieta" = "A2_DT", 
+                    "A2 Tabaco" = "A2_TB", "A4 (al menos un hábito)" = "A4", "A4 Actividad física" = "A4_AF", "A4 Dieta" = "A4_DT", 
+                    "A4 Tabaco" = "A4_TB"), selected = "A1"))       
+```
+
 
 
 # Curva de progreso
 
-## Row 1
+## Row 1 {data-height=250}
 
 ### 
 ```{r echo=FALSE}
@@ -50,24 +70,21 @@ y esto y lo otro
   
   sliderInput("Edad", label = "Edad:",
               min = 10, max = 80, value = c(10,80)))
+```
+
+### 
+```{r echo=FALSE}
      
  inputPanel("Estratificar:",
  radioButtons("Estra", "Estratos:", choices = list("Ninguno" = 1, "Sexo" = 2, "Edad" = 3), 
                    selected = 1))
 ```
   
-  
-### Analizar  
-```{r, echo = FALSE}
-  inputPanel( h3("Analizar:"),
-    checkboxGroupInput("Habitos", label = h4("Hábitos"), 
-     choices = list("A1 (al menos un hábito)" = "A1", "A1 Actividad física" = "A1_AF", "A1 Dieta" = "A1_DT", 
-                    "A1 Tabaco" = "A1_TB")))       
-```
 
-## Gráfico
-```{r, echo = FALSE}
-renderPlot({
+## Gráfico  {data-height=500}
+```{r echo=FALSE, fig.height=3, fig.width=3}
+
+renderPlotly({
   
   bas<-filter(base, edad_consult>input$Edad[1], edad_consult<(input$Edad[2]+1))
   
@@ -81,9 +98,11 @@ renderPlot({
   
   bas <- bas %>%  filter(habito %in% input$Habitos)
   
-  p <- ggplot(bas, aes(x=fechas, y = porcen, col = habito)) + geom_line()
+  p <- ggplot(bas, aes(x=fechas, y = porcen, col = habito, text = as.Date(fechas))) + geom_line()
   if (input$Estra == 2) p <- p + facet_wrap(~Sexo)
   if (input$Estra == 3) p <- p + facet_wrap(~Edad)
+  
+  p <- ggplotly(p, height=600)
   
   print(p)
   
