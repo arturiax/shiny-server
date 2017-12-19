@@ -33,7 +33,7 @@ source("/home/art/shiny-server/funciones.R")
 
 ```
 
-# Introduction {.sidebar data-width=300}
+# Introduction {.sidebar data-width=280}
 
 El informe PVS representa 2 indicadores(pestañas azules de la parte superior) , que os serán de utilidad para continuar trabajando en la mejora contínua del programa en el centro:
 
