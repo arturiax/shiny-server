@@ -8,12 +8,9 @@ library(shiny)
 library(emoGG)
 
 
-df_reviews <- readRDS("reviews")
-df_revisores <- readRDS("revisor")
-df_tags <- readRDS("tags")
-df_cerve_brew <- readRDS("cervebrew")
+
 df_cervezas <- readRDS("cerve")
-df_breweries <- readRDS("brew")
+
 
 
 axis_vars <- c(

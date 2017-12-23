@@ -16,12 +16,12 @@ axis_vars <- c(
 )  
 
 
-df_reviews <- readRDS("reviews")
-df_revisores <- readRDS("revisor")
-df_tags <- readRDS("tags")
-df_cerve_brew <- readRDS("cervebrew")
+# df_reviews <- readRDS("reviews")
+# df_revisores <- readRDS("revisor")
+# df_tags <- readRDS("tags")
+# df_cerve_brew <- readRDS("cervebrew")
 df_cervezas <- readRDS("cerve")
-df_breweries <- readRDS("brew")
+#df_breweries <- readRDS("brew")
 
 
 fluidPage(
