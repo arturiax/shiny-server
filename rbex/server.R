@@ -1,0 +1,134 @@
+library(ggvis)
+library(dplyr)
+library(emojifont)
+library(plotly)
+library(shiny)
+#devtools::install_github("dill/emoGG",TRUE)
+
+library(emoGG)
+
+
+df_reviews <- readRDS("reviews")
+df_revisores <- readRDS("revisor")
+df_tags <- readRDS("tags")
+df_cerve_brew <- readRDS("cervebrew")
+df_cervezas <- readRDS("cerve")
+df_breweries <- readRDS("brew")
+
+
+axis_vars <- c(
+  "ABV" = "abv",
+  "Rating" = "average",
+  "Number of reviews" = "n_ratings"
+)  
+
+df_cervezas <- df_cervezas %>% mutate(tipo = case_when(
+                                      #average<1.75 ~ emoji("face_vomiting"),
+                                      average<2 ~ emoji('nauseated_face'),
+                                      #average<2.5 ~ emoji('slight_frown'),
+                                      average<3 ~ emoji('neutral_face'),
+                                      #average<3.25 ~ emoji('slight_smile'),
+                                      average<3.5 ~ emoji("smiley"),
+                                      average <3.75 ~ emoji("yum"),
+                                      average <4 ~ emoji('heart_eyes'),
+                                      TRUE ~ emoji('crown')))
+
+
+function(input, output, session) {
+  
+  # Filter the movies, returning a data frame
+  cerves <- reactive({
+    # Due to dplyr issue #318, we need temp variables for input values
+    reviews <- input$reviews
+    percen <- input$ibus
+    minabv <- input$abv[1]
+    maxabv <- input$abv[2]
+   
+    # Apply filters
+    m <- df_cervezas %>%
+      filter(
+        n_ratings >= reviews,
+        percentil >= percen,
+        abv >= minabv,
+        abv <= maxabv
+      ) 
+    
+    # Optional: filter by genre
+    if (input$style != "All") {
+      m <- m %>% filter(style == input$style)
+    }
+    # Optional: filter by director
+    if (!is.null(input$search) && input$search != "") {
+      m <- m %>% filter(brewer==input$search)
+    }
+   
+   
+    m <- as.data.frame(m)
+    
+    
+    
+    # Add column which says whether the movie won any Oscars
+  #   # Be a little careful in case we have a zero-row data frame
+  #   m$has_oscar <- character(nrow(m))
+  #   m$has_oscar[m$Oscars == 0] <- "No"
+  #   m$has_oscar[m$Oscars >= 1] <- "Yes"
+  #   m
+   })
+  # 
+  # Function for generating tooltip text
+  cerve_tooltip <- function(x) {
+    if (is.null(x)) return(NULL)
+   if (is.null(x$name)) return(NULL)
+
+#   Pick out the movie with this ID
+    df_cervezas <- isolate(cerves())
+    cerve <- df_cervezas[df_cervezas$name== x$name, ]
+  #   4percentil
+   paste0("<b>", cerve$name, "</b><br>",
+          cerve$average, "<br>",
+          cerve$percentil)
+   
+  }
+  #          "$", format(movie$BoxOffice, big.mark = ",", scientific = FALSE)
+  #   )
+  # }
+  # 
+  # A reactive expression with the ggvis plot
+  #vis <- reactive({
+    # Lables for axes
+    # xvar <- reactive({names(axis_vars)[axis_vars == input$xvar]})
+    # yvar <-  reactive({names(axis_vars)[axis_vars == input$yvar]})
+    # 
+    # # Normally we could do something like props(x = ~BoxOffice, y = ~Reviews),
+    # but since the inputs are strings, we need to do a little more work.
+    # xvar <- prop("x", as.symbol(input$xvar))
+    # yvar <- prop("y", as.symbol(input$yvar))
+    # 
+    # cerves %>%
+    #   ggvis(x = xvar, y = yvar) %>%
+    #   layer_points(size := 50, size.hover := 200,
+    #                fillOpacity := 0.2, fillOpacity.hover := 0.5,
+    #                stroke = ~tipo,
+    #                 key := ~name) %>%
+    #   add_tooltip(cerve_tooltip, "hover") %>%
+    #   add_axis("x", title = xvar_name) %>%
+    #   add_axis("y", title = yvar_name) %>%
+    #   #add_legend("stroke", title = "Won Oscar", values = c("Yes", "No")) %>%
+    #   #scale_nominal("stroke", domain = c("Yes", "No"),
+    #    #             range = c("orange", "#aaa")) %>%
+    #   set_options(width = 500, height = 500)
+  #})
+  output$plot1 <- renderPlotly ({
+    nombres<-cerves()$name
+    Comentarios<-cerves()$tipo
+    p<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =4, alpha=.6)
+    #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
+    p <- ggplotly(p, height=500)
+    
+    #print(p)
+    })
+  
+ # vis %>% bind_shiny("plot1")
+  
+  output$n_cerve <- renderText({ nrow(cerves()) })
+}
