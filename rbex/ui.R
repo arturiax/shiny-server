@@ -63,7 +63,7 @@ fluidPage(
            )
     ),
     column(9,
-           plotlyOutput("plot1"),
+           plotlyOutput("p"),
            wellPanel(
              span("Number of beers selected:",
                   textOutput("n_cerve")

@@ -5,7 +5,7 @@ library(plotly)
 library(shiny)
 #devtools::install_github("dill/emoGG",TRUE)
 
-library(emoGG)
+#library(emoGG)
 
 
 
@@ -115,12 +115,12 @@ function(input, output, session) {
     #    #             range = c("orange", "#aaa")) %>%
     #   set_options(width = 500, height = 500)
   #})
-  output$plot1 <- renderPlotly ({
+  output$p <- renderPlotly ({
     nombres<-cerves()$name
     Comentarios<-cerves()$tipo
-    p<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =4, alpha=.6)
+    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =4, alpha=.6)
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
-    p <- ggplotly(p, height=500)
+    p <- plotly_build(q)
     
     #print(p)
     })
