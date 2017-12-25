@@ -24,8 +24,19 @@ df_cervezas <- readRDS("cerve")
 #df_breweries <- readRDS("brew")
 
 
+mobileDetect <- function(inputId, value = 0) {
+  tagList(
+    singleton(tags$head(tags$script(src = "js/mobile.js"))),
+    tags$input(id = inputId,
+               class = "mobile-element",
+               type = "hidden")
+  )
+}
+
 fluidPage(
   titlePanel("Beer explorer"),
+  mobileDetect('isMobile'),
+  
   fluidRow(
     column(3,
            wellPanel(
@@ -65,8 +76,9 @@ fluidPage(
     column(9,
            plotlyOutput("p"),
            wellPanel(
-             span("Number of beers selected:",
-                  textOutput("n_cerve")
+             span("Number of selected:",
+                  textOutput("n_cerve")),
+             span("mobile", textOutput('isItMobile')
              )
            )
     )

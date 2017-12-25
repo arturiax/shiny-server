@@ -33,6 +33,10 @@ df_cervezas <- df_cervezas %>% mutate(tipo = case_when(
 
 function(input, output, session) {
   
+  output$isItMobile <- renderText({
+    ifelse(input$isMobile, "You are on a mobile device", "You are not on a mobile device")
+  })
+  
   # Filter the movies, returning a data frame
   cerves <- reactive({
     # Due to dplyr issue #318, we need temp variables for input values
