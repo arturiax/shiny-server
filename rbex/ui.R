@@ -38,7 +38,7 @@ fluidPage(
   mobileDetect('isMobile'),
   
   fluidRow(
-    column(3,
+    column(3, 
            wellPanel(
              h4("Filter"),
              sliderInput("reviews", "Minimum number of reviews on Ratebeer",
@@ -74,8 +74,9 @@ fluidPage(
            )
     ),
     column(9,
-           plotlyOutput("p"),
-           wellPanel(
+           conditionalPanel(condition = "output.mob2",plotOutput("pl2")),
+           conditionalPanel(condition = "output.mob1",plotlyOutput("pl1")),
+                      wellPanel(
              span("Number of selected:",
                   textOutput("n_cerve")),
              span("mobile", textOutput('isItMobile')
@@ -84,3 +85,4 @@ fluidPage(
     )
   )
 )
+
