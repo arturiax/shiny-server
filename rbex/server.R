@@ -60,7 +60,7 @@ function(input, output, session) {
     }
     # Optional: filter by director
     if (!is.null(input$search) && input$search != "") {
-      m <- m %>% filter(brewer==input$search)
+      m <- m %>% filter(brewer %in% input$search)
     }
    
    
@@ -136,27 +136,42 @@ function(input, output, session) {
     
     #print(p)
     })
+  ranges <- reactiveValues(x = NULL, y = NULL)
+  
+  
   output$pl2 <- renderPlot ({
     nombres<-cerves()$name
     Comentarios<-cerves()$tipo
     # cerves()$xv<-input$xvar
     # cerves()$yv <- input$yvar
     
-    #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =6, alpha=.8)
+    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + 
+      geom_text(aes(label =Comentarios),family="EmojiOne", size =6, alpha=.8) +
+      coord_cartesian(xlim = ranges$x, ylim = ranges$y, expand = FALSE)
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
-    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
+    #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
     
     q
     #print(q)
   })
-  
+  observeEvent(input$plot1_dblclick, {
+    brush <- input$plot1_brush
+    if (!is.null(brush)) {
+      ranges$x <- c(brush$xmin, brush$xmax)
+      ranges$y <- c(brush$ymin, brush$ymax)
+      
+    } else {
+      ranges$x <- NULL
+      ranges$y <- NULL
+    }
+  })
  # vis %>% bind_shiny("plot1")
   
   output$n_cerve <- renderText({ nrow(cerves()) })
   output$cervezas <- renderText({
    
     
-    aux<-nearPoints(cerves(), input$pl2_click, maxpoints = 1)
+    aux<-nearPoints(cerves(), input$pl2_click, maxpoints = 5, threshold = 10)
     aux$name
   })
 }
