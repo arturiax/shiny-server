@@ -74,15 +74,18 @@ fluidPage(
            )
     ),
     column(9,
-           conditionalPanel(condition = "output.mob2",plotOutput("pl2")),
-           conditionalPanel(condition = "output.mob1",plotlyOutput("pl1")),
-                      wellPanel(
+           #conditionalPanel(condition = "output.mob2",plotOutput("pl2", click = "pl2_click")),
+           #conditionalPanel(condition = "output.mob1",plotOutput("pl2", click = "pl2_click")),
+           plotOutput("pl2", click = "pl2_click"),
+                     wellPanel(
              span("Number of selected:",
                   textOutput("n_cerve")),
-             span("mobile", textOutput('isItMobile')
+             span(textOutput("cervezas"))
+             #span("mobile", textOutput('isItMobile')
+             
              )
            )
     )
   )
-)
+
 

@@ -76,8 +76,8 @@ function(input, output, session) {
   #   m
    })
   
-  output$mob2 <- reactive({input$isMobile})
-  output$mob1 <- reactive({!input$isMobile})
+  output$mob1 <- reactive({input$isMobile})
+  output$mob2 <- reactive({!input$isMobile})
   outputOptions(output, 'mob1', suspendWhenHidden = FALSE)
   outputOptions(output, 'mob2', suspendWhenHidden = FALSE)
   
@@ -139,14 +139,24 @@ function(input, output, session) {
   output$pl2 <- renderPlot ({
     nombres<-cerves()$name
     Comentarios<-cerves()$tipo
-    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =4, alpha=.6)
+    # cerves()$xv<-input$xvar
+    # cerves()$yv <- input$yvar
+    
+    #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =6, alpha=.8)
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
+    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
     
-    
-    print(q)
+    q
+    #print(q)
   })
   
  # vis %>% bind_shiny("plot1")
   
   output$n_cerve <- renderText({ nrow(cerves()) })
+  output$cervezas <- renderText({
+   
+    
+    aux<-nearPoints(cerves(), input$pl2_click, maxpoints = 1)
+    aux$name
+  })
 }
