@@ -1,6 +1,10 @@
 library(ggvis)
 #library(shinysky)
 library(plotly)
+library(shinythemes)
+library(shinycssloaders)
+library(shinyjqui)
+library(ggiraph)
 
 # # For dropdown menu
 # actionLink <- function(inputId, ...) {
@@ -33,7 +37,7 @@ mobileDetect <- function(inputId, value = 0) {
   )
 }
 
-fluidPage(
+fluidPage(#themeSelector(),
   titlePanel("Beer explorer"),
   mobileDetect('isMobile'),
   
@@ -77,12 +81,18 @@ fluidPage(
     column(9,
            #conditionalPanel(condition = "output.mob2",plotOutput("pl2", click = "pl2_click")),
            #conditionalPanel(condition = "output.mob1",plotOutput("pl2", click = "pl2_click")),
-           plotOutput("pl2", click = "pl2_click",
-                      dblclick = "plot1_dblclick",
-                      brush = brushOpts(
-                        id = "plot1_brush",
-                        resetOnNew = TRUE)),
-                     wellPanel(
+           # plotOutput("pl2", click = "pl2_click",
+           #            dblclick = "plot1_dblclick",
+           #            brush = brushOpts(
+           #              id = "plot1_brush",
+           #              resetOnNew = TRUE)) %>% 
+           #   withSpinner() %>% jqui_resizabled(),
+           
+           ggiraphOutput("pl3") %>% withSpinner(),
+           
+           
+           
+           wellPanel(
              span("Number of selected:",
                   textOutput("n_cerve")),
              span(textOutput("cervezas"))

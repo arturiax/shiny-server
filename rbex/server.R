@@ -3,6 +3,8 @@ library(dplyr)
 library(emojifont)
 library(plotly)
 library(shiny)
+library(ggiraph)
+library(stringr)
 #devtools::install_github("dill/emoGG",TRUE)
 
 #library(emoGG)
@@ -129,6 +131,7 @@ function(input, output, session) {
   #})
   output$pl1 <- renderPlotly ({
     nombres<-cerves()$name
+    
     Comentarios<-cerves()$tipo
     q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  + geom_text(aes(label =Comentarios),family="EmojiOne", size =4, alpha=.6)
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
@@ -154,6 +157,27 @@ function(input, output, session) {
     q
     #print(q)
   })
+  
+  
+  output$pl3 <- renderggiraph ({
+    nombres<-cerves()$name
+    nombres2<-str_replace(nombres,"'", "")
+    Comentarios<-cerves()$tipo
+    # cerves()$xv<-input$xvar
+    # cerves()$yv <- input$yvar
+    
+    q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  
+      #geom_text(aes(label =Comentarios),family="EmojiOne", size =6, alpha=.8) 
+    #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
+    #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
+    
+    my_gg <- q + geom_text_interactive(aes(label =Comentarios, tooltip = nombres2, data_id=nombres2), family="EmojiOne",size = 5) 
+    
+    
+    ggiraph(code = print(my_gg), hover_css = "cursor:pointer;fill:red;size:7;" )
+    #print(q)
+  })
+  
   observeEvent(input$plot1_dblclick, {
     brush <- input$plot1_brush
     if (!is.null(brush)) {
