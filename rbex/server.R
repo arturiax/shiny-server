@@ -12,7 +12,7 @@ library(stringr)
 
 
 df_cervezas <- readRDS("cerve")
-
+df_cervezas$click <-sprintf("window.open(\"%s\")", df_cervezas$url)
 
 
 axis_vars <- c(
@@ -165,20 +165,21 @@ function(input, output, session) {
     Comentarios<-cerves()$tipo
     # cerves()$xv<-input$xvar
     # cerves()$yv <- input$yvar
-    
+    #cerves()$click <-sprintf("window.open(\"%s\")",cerves()$url)
+    id <- cerves()$cer_id
     q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar, text="nombres"))  
       #geom_text(aes(label =Comentarios),family="EmojiOne", size =6, alpha=.8) 
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
     #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
     
     if (input$emoji=="point") {
-    my_gg <- q + geom_point_interactive(aes(tooltip = nombres2, data_id=nombres2),size = 3, color= "blue", alpha = .6) 
+    my_gg <- q + geom_point_interactive(aes(tooltip = nombres2, data_id=id, ondoubleclick=click, color=Comentarios),size = 3, alpha = .6) 
     }
     else {
-      my_gg <- q + geom_text_interactive(aes(label =Comentarios, tooltip = nombres2, data_id=nombres2), family="EmojiOne",size = 5) 
+      my_gg <- q + geom_text_interactive(aes(label =Comentarios, tooltip = nombres2, data_id=id, onclick=click), family="EmojiOne",size = 5) 
     }
     my_gg <- my_gg + theme_classic()
-    ggiraph(code = print(my_gg), hover_css = "cursor:pointer;fill:red;size:7;" )
+    ggiraph(code = print(my_gg), hover_css = "cursor:pointer;fill:red;size:7;" ,  zoom_max = 5)
     #print(q)
   })
   
@@ -200,10 +201,17 @@ function(input, output, session) {
  # vis %>% bind_shiny("plot1")
   
   output$n_cerve <- renderText({ nrow(cerves()) })
-  output$cervezas <- renderText({
-   
-    
-    aux<-nearPoints(cerves(), input$pl2_click, maxpoints = 5, threshold = 10)
-    aux$name
+  output$cervezas <- DT::renderDataTable(
+    selected_car(), options = list(lengthChange = FALSE)
+  )
+  selected_car <- reactive({
+    if( is.null(input$pl3_selected)){
+      NULL
+    } else 
+      filter(select(cerves(), cer_id, name, brewer, style, n_ratings, average, percentil, abv), cer_id %in% input$pl3_selected)
   })
+    
+  #   aux<-nearPoints(cerves(), input$pl2_click, maxpoints = 5, threshold = 10)
+  #   aux$name
+  # })
 }

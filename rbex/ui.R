@@ -99,7 +99,7 @@ fluidPage(#themeSelector(),
            wellPanel(
              span("Number of selected:",
                   textOutput("n_cerve")),
-             span(textOutput("cervezas"))
+             span(DT::dataTableOutput("cervezas"))
              #span("mobile", textOutput('isItMobile')
              
              )
