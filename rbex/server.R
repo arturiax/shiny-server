@@ -30,7 +30,7 @@ df_cervezas <- df_cervezas %>% mutate(tipo = case_when(
                                       average<3.5 ~ emoji("smiley"),
                                       average <3.75 ~ emoji("yum"),
                                       average <4 ~ emoji('heart_eyes'),
-                                      TRUE ~ emoji('crown')))
+                                      TRUE ~ emoji('crown')), percentil = as.integer(percentil))
 
 
 function(input, output, session) {
@@ -161,7 +161,7 @@ function(input, output, session) {
   
   output$pl3 <- renderggiraph ({
     nombres<-cerves()$name
-    nombres2<-str_replace(nombres,"'", "")
+    nombres2<-htmltools::htmlEscape(str_replace(nombres,"'", ""), TRUE)
     Comentarios<-cerves()$tipo
     # cerves()$xv<-input$xvar
     # cerves()$yv <- input$yvar
@@ -171,9 +171,13 @@ function(input, output, session) {
     #p <- cerves() %>% ggplot(aes_string(x= input$xvar, y = input$yvar)) + geom_emoji(d))ata = cerves(), emoji = tipo)
     #q<-ggplot(data=cerves(), aes_string(x= input$xvar, y = input$yvar))  + geom_point()
     
-    my_gg <- q + geom_text_interactive(aes(label =Comentarios, tooltip = nombres2, data_id=nombres2), family="EmojiOne",size = 5) 
-    
-    
+    if (input$emoji=="point") {
+    my_gg <- q + geom_point_interactive(aes(tooltip = nombres2, data_id=nombres2),size = 3, color= "blue", alpha = .6) 
+    }
+    else {
+      my_gg <- q + geom_text_interactive(aes(label =Comentarios, tooltip = nombres2, data_id=nombres2), family="EmojiOne",size = 5) 
+    }
+    my_gg <- my_gg + theme_classic()
     ggiraph(code = print(my_gg), hover_css = "cursor:pointer;fill:red;size:7;" )
     #print(q)
   })
@@ -189,6 +193,10 @@ function(input, output, session) {
       ranges$y <- NULL
     }
   })
+  
+  output$tbl = DT::renderDataTable(
+    select(cerves(), name, brewer, style, n_ratings, average, percentil, abv), options = list(lengthChange = FALSE)
+  )
  # vis %>% bind_shiny("plot1")
   
   output$n_cerve <- renderText({ nrow(cerves()) })

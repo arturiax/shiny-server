@@ -5,6 +5,7 @@ library(shinythemes)
 library(shinycssloaders)
 library(shinyjqui)
 library(ggiraph)
+library(shinydashboard)
 
 # # For dropdown menu
 # actionLink <- function(inputId, ...) {
@@ -79,6 +80,9 @@ fluidPage(#themeSelector(),
            )
     ),
     column(9,
+    tabsetPanel(
+      tabPanel("Gráfico", 
+     radioButtons("emoji", "Tipo de punto", choices = c("Normal" = "point", "Emojis" = "emo")),
            #conditionalPanel(condition = "output.mob2",plotOutput("pl2", click = "pl2_click")),
            #conditionalPanel(condition = "output.mob1",plotOutput("pl2", click = "pl2_click")),
            # plotOutput("pl2", click = "pl2_click",
@@ -99,8 +103,9 @@ fluidPage(#themeSelector(),
              #span("mobile", textOutput('isItMobile')
              
              )
-           )
-    )
+           ),
+    tabPanel("Tabla", DT::dataTableOutput('tbl'))
   )
-
-
+)
+)
+)
