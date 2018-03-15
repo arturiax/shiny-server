@@ -16,7 +16,7 @@ puntu <- c("p15", "p2", "p25", "p3", "p35", "p375", "p4", "ptop")
 alco <- c("al15", "al5", "al75", "al10", "al125", "altop", "nose")
 otras <- c("halo", "navi", "reti", "indu", "cola")
 modifica <- c(-2, 20, 16, 10, 8, 2,0,0,0,0,0,0,0,0,0,0, -1,-1, 0, -1, 0,0,0,0,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0, -1, 0,-1,0, -1, -1, 0, -1, -1,-1)
-listcer <- final$cer_name
+listcer <- final$cer_name[1:100]
 #vari_a <- colnames(select(final, ends_with("_a")))
 # vari_s <- colnames(select(final, ends_with("_s")))
 
