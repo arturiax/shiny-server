@@ -2,6 +2,7 @@
 
 source("global.R", local = TRUE)
 
+lista <- final$cer_name
 #### MINIPAGE #################################################################
 
 # body {
@@ -296,7 +297,7 @@ body <- dashboardBody(
               )
           ),        
                 box(title ="SELECCIONA CERVEZA", status="primary",
-                selectizeInput("search", "Busca:", choices = c("", final$cer_name)),
+                selectizeInput("search", "Busca:", choices = NULL, selected = 1),
                 div(style="display:inline-block;width:32%;text-align: center;",actionButton(style="color: #fff; background-color: #337ab7; border-color: #2e6da4", "ale", "Aleatoria",icon = icon("ramdon")))
                 )
                 
@@ -342,7 +343,7 @@ body <- dashboardBody(
                 img(src = "muc_neg.png", height = 35), img(src = "cre_neg.png", height = 35), 
                 ": Negra, marrón oscura") 
            ),
-          box(title ="Puntuación", status = "info", solidHeader = TRUE,
+          box(title ="Puntuación (RateBeer)", status = "info", solidHeader = TRUE,
               p(img(src = "p15.png", height = 35), ": <1.5"),
               p(img(src = "p2.png", height = 35), ": 1.5 - 2"),
               p(img(src = "p25.png", height = 35), ": 2 - 2.5"),
@@ -450,6 +451,7 @@ server <- function(input, output, session) {
   #   h2()
   #   
   # })
+  updateSelectizeInput(session = session, inputId = 'search', choices = c(Choose = '', lista), server = TRUE)
   Sys.sleep(0.1)
   hide(id = "loading-content", anim = TRUE, animType = "fade")    
   shinyjs::show("app-content")
@@ -461,7 +463,7 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$ale, {
-    updateSelectInput(session, "search",selected = sample(final$cer_name,1)) 
+    updateSelectizeInput(session = session, inputId = 'search', choices = c(Choose = '', lista), selected = sample(lista,1), server = TRUE)
     #shinyjs::runjs("window.scrollTo(0, 50)")
   })
   
@@ -529,7 +531,7 @@ server <- function(input, output, session) {
   })
  
   output$puntu <- renderUI ({ 
-    p("Puntuación (RateBeer): ", img(src = paste0(puntu[cerve()$puntu], ".png"), height = 35))
+    p("Puntuación (RB): ", img(src = paste0(puntu[cerve()$puntu], ".png"), height = 35))
   })
   
   
