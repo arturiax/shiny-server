@@ -58,7 +58,7 @@ body <- dashboardBody(
             div(id = "imper", uiOutput("imp")),
             div(id = "normal", uiOutput("nor")),
             uiOutput("puntu"),
-            uiOutput("alco"),
+            uiOutput("alcohol"),
             hr(),
             p("Otros: ",
               img(id = "navi", src = "navi.png", height = 30),
@@ -402,7 +402,7 @@ server <- function(input, output, session) {
   })
   
   
-  output$alco <- renderUI ({ 
+  output$alcohol<- renderUI ({ 
     p("Alcohol: ", img(src = paste0(alco[cerve()$alco], ".png"), height = 30))
   })
   
@@ -427,7 +427,9 @@ server <- function(input, output, session) {
   observe({
     if (input$search != "") {
       lapply(tex_a, hide)
-      mapply(mostrar, vari_a, tex_a)
+      lapply(tex_s, hide)
+      mapply(mostrar, cerve()[, 20:69], tex_a)
+      mapply(mostrar, cerve()[, 70:119], tex_s)
     }
   })
   
