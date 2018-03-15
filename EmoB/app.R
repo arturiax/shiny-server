@@ -23,6 +23,92 @@ appCSS <- "
   text-align: center;
   color: #FFFFFF;
 }
+
+.loader {
+  color: #ffffff;
+font-size: 90px;
+text-indent: -9999em;
+overflow: hidden;
+width: 1em;
+height: 1em;
+border-radius: 50%;
+margin: 72px auto;
+position: relative;
+-webkit-transform: translateZ(0);
+-ms-transform: translateZ(0);
+transform: translateZ(0);
+-webkit-animation: load6 1.7s infinite ease, round 1.7s infinite ease;
+animation: load6 1.7s infinite ease, round 1.7s infinite ease;
+}
+@-webkit-keyframes load6 {
+0% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+5%,
+95% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+10%,
+59% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+}
+20% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
+}
+38% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
+}
+100% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+}
+@keyframes load6 {
+0% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+5%,
+95% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+10%,
+59% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+}
+20% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
+}
+38% {
+box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
+}
+100% {
+box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+}
+}
+@-webkit-keyframes round {
+0% {
+-webkit-transform: rotate(0deg);
+transform: rotate(0deg);
+}
+100% {
+-webkit-transform: rotate(360deg);
+transform: rotate(360deg);
+}
+}
+@keyframes round {
+0% {
+-webkit-transform: rotate(0deg);
+transform: rotate(0deg);
+}
+100% {
+-webkit-transform: rotate(360deg);
+transform: rotate(360deg);
+}
+}
+
+
+
+
+
 "
 
 
@@ -41,26 +127,32 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   useShinyjs(),
-  tags$head( 
-    tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
-    tags$style(HTML (
-      "p {
-       font-family : 'Krona One';
-       color : red;
-          }
+  # tags$head(
+  # 
+  #   tags$link(href="https://fonts.googleapis.com/css?family=Permanent+Marker", rel="stylesheet"),
+  #   tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
+  #   tags$style(HTML (
+  #     "p {
+  #      font-family : 'Krona One';
+  #      color : blue;
+  #         }
+  #       h2 {
+  #      font-family : 'Permanent Marker';
+  #     color : red;
+  #     }
+  # 
+  #      "
+  # 
+  #   ))
+  #   ),
 
-
-       "
-
-    ))
-    ),
-  
   inlineCSS(appCSS),
   
   # Loading message
   div(
     id = "loading-content",
-    h2("Cargando la base de cervezas...")
+    h2("Cargando la base de cervezas..."),
+    div( class="loader", "Cargando la base de cervezas...")
   ),
   
   hidden(
@@ -200,7 +292,7 @@ body <- dashboardBody(
               )
           ),        
                 box(title ="Selecciona cerveza",
-                selectInput("search", "Cerveza:", choices = c("", listcer)),
+                selectizeInput("search", "Cerveza:", choices = c("", final$cer_name)),
                 actionButton("ale", "Aleatoria")
                 )
                 
@@ -339,17 +431,17 @@ ui <- dashboardPage(header, sidebar, body)
 #### SERVER FUNCTION ###########################################################
 
 server <- function(input, output, session) {
-  tags$head( 
-    tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
-    tags$style(HTML (
-       "p {
-       font-family : 'Krona One';
-       color : red;
-       }
-       "  
-    ))
-    
-  )
+  # tags$head( 
+  #   tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
+  #   tags$style(HTML (
+  #      "p {
+  #      font-family : 'Krona One';
+  #      color : red;
+  #      }
+  #      "  
+  #   ))
+  #   
+  # )
   # output$nombre <- renderUI({
   #   h2()
   #   
@@ -361,14 +453,17 @@ server <- function(input, output, session) {
   cerve <- reactive({
     if (input$search != "") final[final$cer_name == input$search, ]
     #else cer_ale
+    #shinyjs::runjs("window.scrollTo(0, 50)")
   })
   
   observeEvent(input$ale, {
     updateSelectInput(session, "search",selected = sample(final$cer_name,1)) 
+    #shinyjs::runjs("window.scrollTo(0, 50)")
   })
   
   observe({ 
-  toggle(id = "todo", condition = (input$search != ""))
+    toggle(id = "todo", condition = (input$search != ""))
+    shinyjs::runjs("window.scrollTo(0, 50)")
   }) 
   
   logo <- reactive({
@@ -380,6 +475,7 @@ server <- function(input, output, session) {
 
   apariencia <- reactive({
    paste0(espuma[cerve()$head_m], "_", color[cerve()$color], ".png")
+    
   })
   
   
@@ -387,7 +483,7 @@ server <- function(input, output, session) {
   output$primero <- renderUI({
     list(
     h2(cerve()$cer_name),  
-    p(img(src = logo(), height =50, style="display: block; margin-left: auto; margin-right: auto;")),
+    p(img(src = logo(), height =70, style="display: block; margin-left: auto; margin-right: auto;")),
     hr(),
     p("Pais: ", img(src = cerve()$Flag, height = 35)),
     p("Año: ", lubridate::year(cerve()$cer_f_ini)),
