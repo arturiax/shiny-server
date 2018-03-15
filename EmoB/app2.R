@@ -11,6 +11,20 @@ source("global.R", local = TRUE)
 # }  
 
 
+appCSS <- "
+#loading-content {
+  position: absolute;
+  background: #000000;
+  opacity: 0.9;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
+  color: #FFFFFF;
+}
+"
+
 
 
 header <- dashboardHeader(title = "Emojicervezas")
@@ -45,6 +59,17 @@ body <- dashboardBody(
       
     ))),
   
+  inlineCSS(appCSS),
+  
+  # Loading message
+  div(
+    id = "loading-content",
+    h2("Loading...")
+  ),
+  
+  hidden(
+    div(
+      id = "app-content",
   tabItems(
     tabItem(tabName = "cerve",
         fluidPage(   
@@ -181,7 +206,8 @@ body <- dashboardBody(
     ),
     tabItem(tabName = "leyen",
             
-          box("Estilos", 
+        fluidPage(    
+          box(title ="Estilos", status = "info", solidHeader = TRUE,
               p(img(src = "bel.png", height = 30), ": Abadía, Dubble, Tripple, Quad, Belgian ale"),
               p(img(src = "apa.png", height = 30), ": America Pale Ale, amber, golden"),
               p(img(src = "eng.png", height = 30), ": Estilos británicos EPA, Bitter, Brown ale, Scotch ale"),
@@ -203,7 +229,7 @@ body <- dashboardBody(
               p(img(src = "ses.png", height = 30), ": Session"),
               p(img(src = "imp.png", height = 30), ": Imperial")
           ),
-          box("Apariencia", 
+          box(title ="Apariencia", status = "info", solidHeader = TRUE,
               p(img(src = "sin_rub.png", height = 30), img(src = "med_rub.png", height = 30), 
                 img(src = "muc_rub.png", height = 30), img(src = "cre_rub.png", height = 30), 
                 ": Rubia (Espuma: Sin o poca - medio - mucha - cremosa)") ,
@@ -217,7 +243,7 @@ body <- dashboardBody(
                 img(src = "muc_neg.png", height = 30), img(src = "cre_neg.png", height = 30), 
                 ": Negra, marrón oscura") 
            ),
-          box("Puntuación", 
+          box(title ="Puntuación", status = "info", solidHeader = TRUE,
               p(img(src = "p15.png", height = 30), ": <1.5"),
               p(img(src = "p2.png", height = 30), ": 1.5 - 2"),
               p(img(src = "p25.png", height = 30), ": 2 - 2.5"),
@@ -227,7 +253,7 @@ body <- dashboardBody(
               p(img(src = "p4.png", height = 30), ": 3.75 - 4"),
               p(img(src = "ptop.png", height = 30), ": >4")
           ),
-          box("Alcohol",
+          box(title ="Alcohol", status = "info", solidHeader = TRUE,
               p(img(src = "al15.png", height = 30), ": < 2% de alcohol"),
               p(img(src = "al5.png", height = 30), ": 2% - 5%"),
               p(img(src = "al75.png", height = 30), ": 5% - 7.5%"),
@@ -235,14 +261,14 @@ body <- dashboardBody(
               p(img(src = "al125.png", height = 30), ": 10% - 12.5%"),
               p(img(src = "altop.png", height = 30), ": > 12.5%")
           ),
-          box("Otros", 
+          box(title ="Otros", status = "info", solidHeader = TRUE,
               p(img(src = "halo.png", height = 30), ": De haloween, otoño"),
               p(img(src = "navi.png", height = 30), ": De navidad, invierno"),
               p(img(src = "reti.png", height = 30), ": Retirada del mercado"),
               p(img(src = "indu.png", height = 30), ": Cervecera industrial"),
               p(img(src = "cola.png", height = 30), ": Colaboración o nómada")
           ), 
-          box("Aroma y sabor",
+          box(title ="Aroma y sabor", status = "info", solidHeader = TRUE,
               p(img(src = "equi.png", height = 30), ": Equilibrado"),
               p(img(src = "dulce.png", height = 30), ": Dulce"),
               p(img(src = "tri.png", height = 30), ": Maltas, cereal, grano"),
@@ -278,7 +304,7 @@ body <- dashboardBody(
               p(img(src = "bacon.png", height = 30), ": Bacon"),
               p(img(src = "tosta.png", height = 30), ": Tostado"),
               p(img(src = "tier.png", height = 30), ": A tierra"),
-              p(img(src = "spicy.png", height = 30), ": A especias"),
+              p(img(src = "spicy.png", height = 30), ": Especiado"),
               p(img(src = "nuez.png", height = 30), ": Cacahuete, nuez, frutos secos"),
               p(img(src = "maiz.png", height = 30), ": Maiz"),
               p(img(src = "humo.png", height = 30), ": Tabaco, humo"),
@@ -294,16 +320,14 @@ body <- dashboardBody(
               p(img(src = "queso.png", height = 30), ": Queso"),
               p(img(src = "mine.png", height = 30), ": Mineral"),
               p(img(src = "tea.png", height = 30), ": Té")
-              
-              
-              
-              
-              
-              
-          )              
+           )
+        )  
 )
 )
 )
+)
+)
+
 
 ui <- dashboardPage(header, sidebar, body)
   
@@ -327,6 +351,9 @@ server <- function(input, output, session) {
   #   h2()
   #   
   # })
+  Sys.sleep(0.1)
+  hide(id = "loading-content", anim = TRUE, animType = "fade")    
+  shinyjs::show("app-content")
   
   cerve <- reactive({
     if (input$search != "") final[final$cer_name == input$search, ]
@@ -357,7 +384,8 @@ server <- function(input, output, session) {
   output$primero <- renderUI({
     list(
     h2(cerve()$cer_name),  
-    img(src = logo(), height =50),
+    p(img(src = logo(), height =50, style="display: block; margin-left: auto; margin-right: auto;")),
+    hr(),
     p("Pais: ", img(src = cerve()$Flag, height = 30)),
     p("Año: ", lubridate::year(cerve()$cer_f_ini)),
     
@@ -428,8 +456,8 @@ server <- function(input, output, session) {
     if (input$search != "") {
       lapply(tex_a, hide)
       lapply(tex_s, hide)
-      mapply(mostrar, cerve()[, 20:69], tex_a)
-      mapply(mostrar, cerve()[, 70:119], tex_s)
+      mapply(mostrar, cerve()[, 20:69], tex_a, "a")
+      mapply(mostrar, cerve()[, 70:119], tex_s, "s")
     }
   })
   
