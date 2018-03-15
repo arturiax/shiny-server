@@ -127,31 +127,35 @@ sidebar <- dashboardSidebar(
 
 body <- dashboardBody(
   useShinyjs(),
-  # tags$head(
-  # 
-  #   tags$link(href="https://fonts.googleapis.com/css?family=Permanent+Marker", rel="stylesheet"),
-  #   tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
-  #   tags$style(HTML (
-  #     "p {
-  #      font-family : 'Krona One';
-  #      color : blue;
-  #         }
-  #       h2 {
-  #      font-family : 'Permanent Marker';
-  #     color : red;
-  #     }
-  # 
-  #      "
-  # 
-  #   ))
-  #   ),
+   tags$head(
+   
+     #tags$link(href="https://fonts.googleapis.com/css?family=Lobster", rel="stylesheet"),
+   tags$link(href="https://fonts.googleapis.com/css?family=Krona+One", rel="stylesheet"),
+    tags$style(HTML (
+      
+      "p {
+       font-family : 'Krona One';
+       color : 	black;
+       size : 12 px;
+          }
+      
+        h2 {
+       font-family : 'Lobster';
+      color : black;
+      
+      }
+
+       "
+
+    ))
+    ),
 
   inlineCSS(appCSS),
   
   # Loading message
   div(
     id = "loading-content",
-    h2("Cargando la base de cervezas..."),
+    h1("Cargando la base de cervezas..."),
     div( class="loader", "Cargando la base de cervezas...")
   ),
   
@@ -164,7 +168,7 @@ body <- dashboardBody(
           
           div(id="todo",  
               box(
-                title = "Ficha", background = "black",status = "primary", solidHeader = TRUE,
+                 
                 
                 #img(src = paste0(textOutput(output$text), ".jpg"), height =50),
                 uiOutput("primero"),
@@ -182,7 +186,7 @@ body <- dashboardBody(
                   img(id = "cola", src = "cola.png", height = 35)
                 )
               ),
-              box( title = "Aroma",
+              box( title = "AROMA", status = "warning", 
                    checkboxInput("olfato", "Extra olfato", value=FALSE),
                    img(src = "equi.png", id = "equi", height = 35),
                    img(src = "dulce.png", id = "dulce", height = 35),
@@ -236,7 +240,7 @@ body <- dashboardBody(
                    img(src = "mine.png", id = "mine", height = 35),
                    img(src = "tea.png", id = "tea", height = 35)
               ),
-              box( title = "Sabor",
+              box( title = "SABOR", status = "warning", 
                    checkboxInput("paladar", "Extra paladar", value=FALSE),
                    img(src = "equi.png", id = "equi_s", height = 35),
                    img(src = "dulce.png", id = "dulce_s", height = 35),
@@ -291,9 +295,9 @@ body <- dashboardBody(
                    img(src = "tea.png", id = "tea_s", height = 35) 
               )
           ),        
-                box(title ="Selecciona cerveza",
-                selectizeInput("search", "Cerveza:", choices = c("", final$cer_name)),
-                actionButton("ale", "Aleatoria")
+                box(title ="SELECCIONA CERVEZA", status="primary",
+                selectizeInput("search", "Busca:", choices = c("", final$cer_name)),
+                div(style="display:inline-block;width:32%;text-align: center;",actionButton(style="color: #fff; background-color: #337ab7; border-color: #2e6da4", "ale", "Aleatoria",icon = icon("ramdon")))
                 )
                 
           
