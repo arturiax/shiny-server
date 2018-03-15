@@ -11,6 +11,20 @@ source("global.R", local = TRUE)
 # }  
 
 
+appCSS <- "
+#loading-content {
+  position: absolute;
+  background: #000000;
+  opacity: 0.9;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  height: 100%;
+  text-align: center;
+  color: #FFFFFF;
+}
+"
+
 
 
 header <- dashboardHeader(title = "Emojicervezas")
@@ -45,6 +59,17 @@ body <- dashboardBody(
       
     ))),
   
+  inlineCSS(appCSS),
+  
+  # Loading message
+  div(
+    id = "loading-content",
+    h2("Loading...")
+  ),
+  
+  hidden(
+    div(
+      id = "app-content",
   tabItems(
     tabItem(tabName = "cerve",
         fluidPage(   
@@ -58,7 +83,7 @@ body <- dashboardBody(
             div(id = "imper", uiOutput("imp")),
             div(id = "normal", uiOutput("nor")),
             uiOutput("puntu"),
-            uiOutput("alco"),
+            uiOutput("alcohol"),
             hr(),
             p("Otros: ",
               img(id = "navi", src = "navi.png", height = 30),
@@ -66,20 +91,125 @@ body <- dashboardBody(
               img(id = "reti", src = "reti.png", height = 30),
               img(id = "indu", src = "indu.png", height = 30),
               img(id = "cola", src = "cola.png", height = 30)
-            
-            
-            ),
-            tableOutput("table")
-          )
-          
-         ),  
+            )
+         ),
+         box( title = "Aroma",
+              p(img(src = "olfato.png", height = 30), checkboxInput("olfato", "Extra olfato", value=FALSE)),
+              img(src = "equi.png", id = "equi", height = 30),
+              img(src = "dulce.png", id = "dulce", height = 30),
+              img(src = "tri.png", id = "tri", height = 30),
+              img(src = "herb.png", id = "herb", height = 30),
+              img(src = "frut.png", id = "frut", height = 30),
+              img(src = "alco.png", id = "alco", height = 30),
+              img(src = "flor.png", id = "flor", height = 30),
+              img(src = "tropi.png", id = "tropi", height = 30),
+              img(src = "limo.png", id = "limo", height = 30),
+              img(src = "nara.png", id = "nara", height = 30),
+              img(src = "bana.png", id = "bana", height = 30),
+              img(src = "cere.png", id = "cere", height = 30),
+              img(src = "manz.png", id = "manz", height = 30),
+              img(src = "ciru.png", id = "ciru", height = 30),
+              img(src = "pina.png", id = "pina", height = 30),
+              img(src = "coco.png", id = "coco", height = 30),
+              img(src = "pera.png", id = "pera", height = 30),
+              img(src = "fresa.png", id = "fresa", height = 30),
+              img(src = "uva.png", id = "uva", height = 30),
+              img(src = "melon.png", id = "melon", height = 30),
+              img(src = "cara.png", id = "cara", height = 30),
+              img(src = "choc.png", id = "choc", height = 30),
+              img(src = "cafe.png", id = "cafe", height = 30),
+              img(src = "vani.png", id = "vani", height = 30),
+              img(src = "tofe.png", id = "tofe", height = 30),
+              img(src = "miel.png", id = "miel", height = 30),
+              img(src = "arce.png", id = "arce", height = 30),
+              img(src = "pan.png", id = "pan", height = 30),
+              img(src = "gum.png", id = "gum", height = 30),
+              img(src = "pino.png", id = "pino", height = 30),
+              img(src = "roble.png", id = "roble", height = 30),
+              img(src = "bour.png", id = "bour", height = 30),
+              img(src = "bacon.png", id = "bacon", height = 30),
+              img(src = "tosta.png", id = "tosta", height = 30),
+              img(src = "tier.png", id = "tier", height = 30),
+              img(src = "spicy.png", id = "spicy", height = 30),
+              img(src = "nuez.png", id = "nuez", height = 30),
+              img(src = "maiz.png", id = "maiz", height = 30),
+              img(src = "humo.png", id = "humo", height = 30),
+              img(src = "chile.png", id = "chile", height = 30),
+              img(src = "galle.png", id = "galle", height = 30),
+              img(src = "metal.png", id = "metal", height = 30),
+              img(src = "milk.png", id = "milk", height = 30),
+              img(src = "agua.png", id = "agua", height = 30),
+              img(src = "heno.png", id = "heno", height = 30),
+              img(src = "soja.png", id = "soja", height = 30),
+              img(src = "cuero.png", id = "cuero", height = 30),
+              img(src = "baw.png", id = "baw", height = 30),
+              img(src = "queso.png", id = "queso", height = 30),
+              img(src = "mine.png", id = "mine", height = 30),
+              img(src = "tea.png", id = "tea", height = 30)
+          ),
+          box( title = "Sabor",
+               p(img(src = "paladar.png", height = 30), checkboxInput("paladar", "Extra paladar", value=FALSE)),
+               img(src = "equi.png", id = "equi_s", height = 30),
+               img(src = "dulce.png", id = "dulce_s", height = 30),
+               img(src = "tri.png", id = "tri_s", height = 30),
+               img(src = "herb.png", id = "herb_s", height = 30),
+               img(src = "frut.png", id = "frut_s", height = 30),
+               img(src = "alco.png", id = "alco_s", height = 30),
+               img(src = "flor.png", id = "flor_s", height = 30),
+               img(src = "tropi.png", id = "tropi_s", height = 30),
+               img(src = "limo.png", id = "limo_s", height = 30),
+               img(src = "nara.png", id = "nara_s", height = 30),
+               img(src = "bana.png", id = "bana_s", height = 30),
+               img(src = "cere.png", id = "cere_s", height = 30),
+               img(src = "manz.png", id = "manz_s", height = 30),
+               img(src = "ciru.png", id = "ciru_s", height = 30),
+               img(src = "pina.png", id = "pina_s", height = 30),
+               img(src = "coco.png", id = "coco_s", height = 30),
+               img(src = "pera.png", id = "pera_s", height = 30),
+               img(src = "fresa.png", id = "fresa_s", height = 30),
+               img(src = "uva.png", id = "uva_s", height = 30),
+               img(src = "melon.png", id = "melon_s", height = 30),
+               img(src = "cara.png", id = "cara_s", height = 30),
+               img(src = "choc.png", id = "choc_s", height = 30),
+               img(src = "cafe.png", id = "cafe_s", height = 30),
+               img(src = "vani.png", id = "vani_s", height = 30),
+               img(src = "tofe.png", id = "tofe_s", height = 30),
+               img(src = "miel.png", id = "miel_s", height = 30),
+               img(src = "arce.png", id = "arce_s", height = 30),
+               img(src = "pan.png", id = "pan_s", height = 30),
+               img(src = "gum.png", id = "gum_s", height = 30),
+               img(src = "pino.png", id = "pino_s", height = 30),
+               img(src = "roble.png", id = "roble_s", height = 30),
+               img(src = "bour.png", id = "bour_s", height = 30),
+               img(src = "bacon.png", id = "bacon_s", height = 30),
+               img(src = "tosta.png", id = "tosta_s", height = 30),
+               img(src = "tier.png", id = "tier_s", height = 30),
+               img(src = "spicy.png", id = "spicy_s", height = 30),
+               img(src = "nuez.png", id = "nuez_s", height = 30),
+               img(src = "maiz.png", id = "maiz_s", height = 30),
+               img(src = "humo.png", id = "humo_s", height = 30),
+               img(src = "chile.png", id = "chile_s", height = 30),
+               img(src = "galle.png", id = "galle_s", height = 30),
+               img(src = "metal.png", id = "metal_s", height = 30),
+               img(src = "milk.png", id = "milk_s", height = 30),
+               img(src = "agua.png", id = "agua_s", height = 30),
+               img(src = "heno.png", id = "heno_s", height = 30),
+               img(src = "soja.png", id = "soja_s", height = 30),
+               img(src = "cuero.png", id = "cuero_s", height = 30),
+               img(src = "baw.png", id = "baw_s", height = 30),
+               img(src = "queso.png", id = "queso_s", height = 30),
+               img(src = "mine.png", id = "mine_s", height = 30),
+               img(src = "tea.png", id = "tea_s", height = 30) 
+         )
+        ), 
         h1("Selecciona cerveza")  
           
       )
     ),
     tabItem(tabName = "leyen",
             
-          box("Estilos", 
+        fluidPage(    
+          box(title ="Estilos", status = "info", solidHeader = TRUE,
               p(img(src = "bel.png", height = 30), ": Abadía, Dubble, Tripple, Quad, Belgian ale"),
               p(img(src = "apa.png", height = 30), ": America Pale Ale, amber, golden"),
               p(img(src = "eng.png", height = 30), ": Estilos británicos EPA, Bitter, Brown ale, Scotch ale"),
@@ -101,7 +231,7 @@ body <- dashboardBody(
               p(img(src = "ses.png", height = 30), ": Session"),
               p(img(src = "imp.png", height = 30), ": Imperial")
           ),
-          box("Apariencia", 
+          box(title ="Apariencia", status = "info", solidHeader = TRUE,
               p(img(src = "sin_rub.png", height = 30), img(src = "med_rub.png", height = 30), 
                 img(src = "muc_rub.png", height = 30), img(src = "cre_rub.png", height = 30), 
                 ": Rubia (Espuma: Sin o poca - medio - mucha - cremosa)") ,
@@ -115,7 +245,7 @@ body <- dashboardBody(
                 img(src = "muc_neg.png", height = 30), img(src = "cre_neg.png", height = 30), 
                 ": Negra, marrón oscura") 
            ),
-          box("Puntuación", 
+          box(title ="Puntuación", status = "info", solidHeader = TRUE,
               p(img(src = "p15.png", height = 30), ": <1.5"),
               p(img(src = "p2.png", height = 30), ": 1.5 - 2"),
               p(img(src = "p25.png", height = 30), ": 2 - 2.5"),
@@ -125,7 +255,7 @@ body <- dashboardBody(
               p(img(src = "p4.png", height = 30), ": 3.75 - 4"),
               p(img(src = "ptop.png", height = 30), ": >4")
           ),
-          box("Alcohol",
+          box(title ="Alcohol", status = "info", solidHeader = TRUE,
               p(img(src = "al15.png", height = 30), ": < 2% de alcohol"),
               p(img(src = "al5.png", height = 30), ": 2% - 5%"),
               p(img(src = "al75.png", height = 30), ": 5% - 7.5%"),
@@ -133,14 +263,14 @@ body <- dashboardBody(
               p(img(src = "al125.png", height = 30), ": 10% - 12.5%"),
               p(img(src = "altop.png", height = 30), ": > 12.5%")
           ),
-          box("Otros", 
+          box(title ="Otros", status = "info", solidHeader = TRUE,
               p(img(src = "halo.png", height = 30), ": De haloween, otoño"),
               p(img(src = "navi.png", height = 30), ": De navidad, invierno"),
               p(img(src = "reti.png", height = 30), ": Retirada del mercado"),
               p(img(src = "indu.png", height = 30), ": Cervecera industrial"),
               p(img(src = "cola.png", height = 30), ": Colaboración o nómada")
           ), 
-          box("Aroma y sabor",
+          box(title ="Aroma y sabor", status = "info", solidHeader = TRUE,
               p(img(src = "equi.png", height = 30), ": Equilibrado"),
               p(img(src = "dulce.png", height = 30), ": Dulce"),
               p(img(src = "tri.png", height = 30), ": Maltas, cereal, grano"),
@@ -176,7 +306,7 @@ body <- dashboardBody(
               p(img(src = "bacon.png", height = 30), ": Bacon"),
               p(img(src = "tosta.png", height = 30), ": Tostado"),
               p(img(src = "tier.png", height = 30), ": A tierra"),
-              p(img(src = "spicy.png", height = 30), ": A especias"),
+              p(img(src = "spicy.png", height = 30), ": Especiado"),
               p(img(src = "nuez.png", height = 30), ": Cacahuete, nuez, frutos secos"),
               p(img(src = "maiz.png", height = 30), ": Maiz"),
               p(img(src = "humo.png", height = 30), ": Tabaco, humo"),
@@ -189,17 +319,17 @@ body <- dashboardBody(
               p(img(src = "soja.png", height = 30), ": Salsa de soja"),
               p(img(src = "cuero.png", height = 30), ": Cuero"),
               p(img(src = "baw.png", height = 30), ": Vino"),
+              p(img(src = "queso.png", height = 30), ": Queso"),
+              p(img(src = "mine.png", height = 30), ": Mineral"),
               p(img(src = "tea.png", height = 30), ": Té")
-              
-              
-              
-              
-              
-              
-          )              
+           )
+        )  
 )
 )
 )
+)
+)
+
 
 ui <- dashboardPage(header, sidebar, body)
   
@@ -223,6 +353,9 @@ server <- function(input, output, session) {
   #   h2()
   #   
   # })
+  Sys.sleep(0.1)
+  hide(id = "loading-content", anim = TRUE, animType = "fade")    
+  shinyjs::show("app-content")
   
   cerve <- reactive({
     if (input$search != "") final[final$cer_name == input$search, ]
@@ -253,7 +386,8 @@ server <- function(input, output, session) {
   output$primero <- renderUI({
     list(
     h2(cerve()$cer_name),  
-    img(src = logo(), height =50),
+    p(img(src = logo(), height =50, style="display: block; margin-left: auto; margin-right: auto;")),
+    hr(),
     p("Pais: ", img(src = cerve()$Flag, height = 30)),
     p("Año: ", lubridate::year(cerve()$cer_f_ini)),
     
@@ -298,7 +432,7 @@ server <- function(input, output, session) {
   })
   
   
-  output$alco <- renderUI ({ 
+  output$alcohol<- renderUI ({ 
     p("Alcohol: ", img(src = paste0(alco[cerve()$alco], ".png"), height = 30))
   })
   
@@ -318,6 +452,17 @@ server <- function(input, output, session) {
       if (cerve()$cer_retired)   shinyjs::show("reti")
     }
   })
+  
+  
+  observe({
+    if (input$search != "") {
+      lapply(tex_a, hide)
+      lapply(tex_s, hide)
+      mapply(mostrar, cerve()[, 13:63], tex_a, modifica, "a", input$olfato)
+      mapply(mostrar, cerve()[, 64:114], tex_s, modifica, "s", input$paladar)
+    }
+  })
+  
   
 
   
