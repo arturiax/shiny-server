@@ -17,7 +17,7 @@ alco <- c("al15", "al5", "al75", "al10", "al125", "altop", "nose")
 otras <- c("halo", "navi", "reti", "indu", "cola")
 modifica <- c(-2, 16, 13, 6, 8, 2,0,0,0,0,0,0,0,0,0,0, -1,-1, 0, -1, 0,0,0,0,0,0,0,0,0,0,0,0,-1,0,0,0,0,0,0,0,0, -1, 0,-1,0, -1, -1, 0, -1, -1,-1)
 
-vari_a <- colnames(select(final, ends_with("_a")))
+#vari_a <- colnames(select(final, ends_with("_a")))
 # vari_s <- colnames(select(final, ends_with("_s")))
 
 mostrar <- function(x, y, tipo, mod, super = FALSE) {
