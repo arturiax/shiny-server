@@ -113,7 +113,9 @@ transform: rotate(360deg);
 .content {
   padding-top: 100px;
 }
-
+.sidebar-menu {
+  position: fixed;
+}
 
 "
 
