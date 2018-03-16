@@ -106,8 +106,13 @@ transform: rotate(360deg);
 }
 }
 
-
-
+.main-header {
+  position: fixed;
+  width:100%;
+}
+.content {
+  padding-top: 100px;
+}
 
 
 "
